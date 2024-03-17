@@ -40,6 +40,11 @@ class AppTheme {
         color: Colors.black,
         fontSize: 13,
       ),
+      displayMedium: TextStyle(
+        fontFamily: AppStrings.fontBold,
+        color: Colors.black,
+        fontSize: 13,
+      ),
       bodySmall: TextStyle(
         fontFamily: AppStrings.fontRegular,
         color: Colors.black26,
@@ -59,6 +64,33 @@ class AppTheme {
         fontFamily: AppStrings.fontBold,
         color: Colors.black,
         fontSize: 20,
+      ),
+    ),
+    dropdownMenuTheme: DropdownMenuThemeData(
+      textStyle: const TextStyle(
+        fontFamily: AppStrings.fontBold,
+        color: Colors.black,
+        fontSize: 13,
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(width: 0.5, color: Colors.black),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(width: 1, color: Colors.black),
+        ),
+        counterStyle: const TextStyle(
+          fontFamily: AppStrings.fontBold,
+          color: Colors.black,
+          fontSize: 13,
+        ),
+      ),
+      menuStyle: MenuStyle(
+        side: MaterialStateProperty.all(
+          const BorderSide(width: 0.5, color: Colors.black),
+        ),
       ),
     ),
   );

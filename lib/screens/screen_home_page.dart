@@ -14,6 +14,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<String> brandList = [
+    "Yamaha",
+    "Honda",
+    "TVS",
+  ];
+  String brandValue = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,13 +31,40 @@ class _HomePageState extends State<HomePage> {
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.all(25),
         children: [
+          DropdownMenu<String>(
+            hintText: "Select Brand",
+            width: MediaQuery.of(context).size.width - 50,
+            enableFilter: true,
+            menuHeight: 200,
+            onSelected: (String? value) {
+              // This is called when the user selects an item.
+              setState(() {
+                brandValue = value!;
+              });
+            },
+            dropdownMenuEntries: brandList.map<DropdownMenuEntry<String>>(
+              (String value) {
+                return DropdownMenuEntry<String>(
+                  value: value,
+                  label: value,
+                  style: ButtonStyle(
+                    textStyle: MaterialStateProperty.all(
+                      Theme.of(context).textTheme.displayMedium,
+                    ),
+                  ),
+                );
+              },
+            ).toList(),
+          ),
+          AppSize.gapH20,
           ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: 10,
               itemBuilder: (context, index) {
                 return _elementBike();
-              })
+              }),
+          AppSize.gapH40,
         ],
       ),
     );
