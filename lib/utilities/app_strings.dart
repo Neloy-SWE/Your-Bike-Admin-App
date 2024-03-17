@@ -8,4 +8,6 @@ class AppStrings{
   static const String fontRegular = "regular";
   static const String welcome = "Welcome";
   static const String yourBikeAdminApp = "Your Bike Admin App";
+  static const String allBikeList = "All Bike List";
+  static const String tapToSeeEditDetails = "Tap To See/Edit Details";
 }

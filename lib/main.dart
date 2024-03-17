@@ -3,6 +3,9 @@ import 'package:your_bike_admin/components/theme/app_theme.dart';
 import 'package:your_bike_admin/screens/screen_splash.dart';
 import 'package:your_bike_admin/utilities/app_strings.dart';
 
+/// Created by Neloy on 3/16/2024
+/// Email: taufiqneloy.swe@gmail.com
+
 void main(){
 runApp(const MyApp());
 }
