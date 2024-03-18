@@ -19,7 +19,15 @@ class _HomePageState extends State<HomePage> {
     "Honda",
     "TVS",
   ];
+
+  List<String> ccList = [
+    "110",
+    "125",
+    "150",
+    "155",
+  ];
   String brandValue = "";
+  String ccValue = "";
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +39,14 @@ class _HomePageState extends State<HomePage> {
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.all(25),
         children: [
+          // brand list
           DropdownMenu<String>(
-            hintText: "Select Brand",
+            hintText: AppStrings.selectBrand,
             width: MediaQuery.of(context).size.width - 50,
             enableFilter: true,
             menuHeight: 200,
             onSelected: (String? value) {
+              FocusManager.instance.primaryFocus?.unfocus();
               // This is called when the user selects an item.
               setState(() {
                 brandValue = value!;
@@ -57,6 +67,37 @@ class _HomePageState extends State<HomePage> {
             ).toList(),
           ),
           AppSize.gapH20,
+
+          // cc list
+          DropdownMenu<String>(
+            hintText: AppStrings.selectCC,
+            width: MediaQuery.of(context).size.width - 50,
+            enableFilter: true,
+            menuHeight: 200,
+            onSelected: (String? value) {
+              FocusManager.instance.primaryFocus?.unfocus();
+              // This is called when the user selects an item.
+              setState(() {
+                ccValue = value!;
+              });
+            },
+            dropdownMenuEntries: ccList.map<DropdownMenuEntry<String>>(
+                  (String value) {
+                return DropdownMenuEntry<String>(
+                  value: value,
+                  label: value,
+                  style: ButtonStyle(
+                    textStyle: MaterialStateProperty.all(
+                      Theme.of(context).textTheme.displayMedium,
+                    ),
+                  ),
+                );
+              },
+            ).toList(),
+          ),
+          AppSize.gapH40,
+
+          // bike list
           ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),

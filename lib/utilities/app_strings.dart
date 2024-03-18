@@ -10,4 +10,6 @@ class AppStrings{
   static const String yourBikeAdminApp = "Your Bike Admin App";
   static const String allBikeList = "All Bike List";
   static const String tapToSeeEditDetails = "Tap To See/Edit Details";
+  static const String selectBrand = "Select Brand";
+  static const String selectCC = "Select CC";
 }
