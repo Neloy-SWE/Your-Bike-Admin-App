@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:your_bike_admin/screens/screen_bike_details.dart';
 import 'package:your_bike_admin/utilities/app_image_path.dart';
 import 'package:your_bike_admin/utilities/app_size.dart';
 import 'package:your_bike_admin/utilities/app_strings.dart';
@@ -82,7 +83,7 @@ class _HomePageState extends State<HomePage> {
               });
             },
             dropdownMenuEntries: ccList.map<DropdownMenuEntry<String>>(
-                  (String value) {
+              (String value) {
                 return DropdownMenuEntry<String>(
                   value: value,
                   label: value,
@@ -117,6 +118,11 @@ class _HomePageState extends State<HomePage> {
         GestureDetector(
           onTap: () {
             print(":::::Tap:::::");
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (builder) => const BikeDetails(),
+              ),
+            );
           },
           child: Container(
             height: 100,

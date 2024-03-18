@@ -14,8 +14,8 @@ class MyLoader extends StatefulWidget {
 class _MyLoaderState extends State<MyLoader>
     with SingleTickerProviderStateMixin {
   late final AnimationController rotationController =
-  AnimationController(vsync: this, duration: const Duration(seconds: 4))
-    ..repeat();
+      AnimationController(vsync: this, duration: const Duration(seconds: 4))
+        ..repeat();
 
   @override
   dispose() {

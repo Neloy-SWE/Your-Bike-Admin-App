@@ -5,11 +5,13 @@ import 'package:your_bike_admin/utilities/app_strings.dart';
 /// Created by Neloy on 3/16/2024
 /// Email: taufiqneloy.swe@gmail.com
 
-
 class AppTheme {
   static final get = ThemeData(
     scaffoldBackgroundColor: Colors.white,
     appBarTheme: const AppBarTheme(
+      iconTheme: IconThemeData(
+        color: Colors.black,
+      ),
       centerTitle: true,
       elevation: 0,
       color: Colors.white,
@@ -29,7 +31,6 @@ class AppTheme {
         color: Colors.black,
         fontSize: 25,
       ),
-
       titleMedium: TextStyle(
         fontFamily: AppStrings.fontBold,
         color: Colors.black,

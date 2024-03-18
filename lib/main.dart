@@ -6,8 +6,10 @@ import 'package:your_bike_admin/utilities/app_strings.dart';
 /// Created by Neloy on 3/16/2024
 /// Email: taufiqneloy.swe@gmail.com
 
-void main(){
-runApp(const MyApp());
+void main() {
+  runApp(
+    const MyApp(),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -31,5 +33,3 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
-
