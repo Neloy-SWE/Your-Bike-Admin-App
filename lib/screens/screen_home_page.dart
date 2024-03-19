@@ -128,8 +128,11 @@ class _HomePageState extends State<HomePage> {
             height: 100,
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-                border: Border.all(color: Colors.black, width: 0.5),
-                borderRadius: BorderRadius.circular(10)),
+              border: Border.all(color: Colors.black, width: 0.5),
+              borderRadius: BorderRadius.circular(
+                10,
+              ),
+            ),
             child: Row(
               children: [
                 // image
