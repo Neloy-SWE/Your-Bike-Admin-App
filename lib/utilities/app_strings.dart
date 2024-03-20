@@ -30,4 +30,6 @@ class AppStrings {
   static const String rearWheel = "Rear Wheel";
   static const String frontTyre = "Front Tyre";
   static const String rearTyre = "Rear Tyre";
+  static const String delete = "Delete";
+  static const String edit = "Edit";
 }

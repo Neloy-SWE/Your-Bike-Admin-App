@@ -142,6 +142,39 @@ class _BikeDetailsState extends State<BikeDetails> {
             title: AppStrings.rearTyre,
             details: "Yamaha",
           ),
+          AppSize.gapH20,
+
+          MaterialButton(
+            elevation: 0,
+            height: 50,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                10,
+              ),
+            ),
+            onPressed: () {},
+            color: Colors.black,
+            child: Text(
+              AppStrings.edit,
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+          ),
+          AppSize.gapH10,
+          MaterialButton(
+            elevation: 0,
+            height: 50,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                10,
+              ),
+            ),
+            onPressed: () {},
+            color: Colors.red,
+            child: Text(
+              AppStrings.delete,
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+          ),
         ],
       ),
     );
