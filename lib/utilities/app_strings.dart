@@ -34,4 +34,14 @@ class AppStrings {
   static const String edit = "Edit";
   static const String editBikeDetails = "Edit Bike Details";
   static const String cancel = "Cancel";
+  static const String save = "Save";
+  static const String update = "Details update successfully !";
+  static const String done = "Done";
+  static const String wait = "Please wait for a while";
+  static const String checkYourInternet = "Check your internet";
+  static const String goBack = "Go Back";
+  static const String yes = "YES";
+  static const String no = "NO";
+  static const String doYouWantToExitApp = "Do you want to exit the app ?";
+  static const String doYouWantToDelete = "Do you want to delete ?";
 }

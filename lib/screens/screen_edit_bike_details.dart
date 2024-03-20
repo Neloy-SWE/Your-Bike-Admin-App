@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:your_bike_admin/components/custom_dialogue.dart';
 import 'package:your_bike_admin/components/custom_text_field.dart';
 import 'package:your_bike_admin/utilities/app_size.dart';
 
@@ -259,7 +260,7 @@ class _EditBikeDetailsState extends State<EditBikeDetails> {
             context: context,
             controller: nameController,
             textInputType: TextInputType.text,
-            textInputAction: TextInputAction.next,
+            textInputAction: TextInputAction.done,
             label: AppStrings.rearTyre,
             hint: "bike",
           ),
@@ -274,10 +275,25 @@ class _EditBikeDetailsState extends State<EditBikeDetails> {
                 10,
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+              // CustomDialogue.simple(context: context, icon: Icons.verified_outlined, message: AppStrings.update, buttonText: AppStrings.done);
+              // CustomDialogue.simple(context: context, icon: Icons.error_outline_outlined, message: AppStrings.checkYourInternet, buttonText: AppStrings.goBack);
+              // CustomDialogue.functional(
+              //   context: context,
+              //   onPressed: () {},
+              //   icon: Icons.logout,
+              //   message: AppStrings.doYouWantToExitApp,
+              // );
+              // CustomDialogue.functional(
+              //   context: context,
+              //   onPressed: () {},
+              //   icon: Icons.delete,
+              //   message: AppStrings.doYouWantToDelete,
+              // );
+            },
             color: Colors.black,
             child: Text(
-              AppStrings.edit,
+              AppStrings.save,
               style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
