@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:your_bike_admin/screens/screen_edit_bike_details.dart';
 import 'package:your_bike_admin/utilities/app_size.dart';
 
 import '../utilities/app_image_path.dart';
@@ -144,6 +145,7 @@ class _BikeDetailsState extends State<BikeDetails> {
           ),
           AppSize.gapH20,
 
+          // edit button
           MaterialButton(
             elevation: 0,
             height: 50,
@@ -152,7 +154,13 @@ class _BikeDetailsState extends State<BikeDetails> {
                 10,
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (builder) => const EditBikeDetails(),
+                ),
+              );
+            },
             color: Colors.black,
             child: Text(
               AppStrings.edit,
@@ -160,6 +168,8 @@ class _BikeDetailsState extends State<BikeDetails> {
             ),
           ),
           AppSize.gapH10,
+
+          // delete button
           MaterialButton(
             elevation: 0,
             height: 50,
@@ -175,6 +185,7 @@ class _BikeDetailsState extends State<BikeDetails> {
               style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
+          AppSize.gapH40,
         ],
       ),
     );
