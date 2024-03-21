@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:your_bike_admin/screens/screen_home_page.dart';
+import 'package:your_bike_admin/screens/screen_user_login.dart';
 import 'package:your_bike_admin/utilities/app_image_path.dart';
 import 'package:your_bike_admin/utilities/app_size.dart';
 import 'package:your_bike_admin/utilities/app_strings.dart';
@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(const Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (builder) => const HomePage(),
+          builder: (builder) => const Login(),
         ),
       );
     });
@@ -58,6 +58,12 @@ class _SplashScreenState extends State<SplashScreen> {
                   AppSize.gapH40,
                   const MyLoader(),
                 ],
+              ),
+              Text(
+                AppStrings.copyright,
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      fontSize: 9,
+                    ),
               ),
             ],
           ),

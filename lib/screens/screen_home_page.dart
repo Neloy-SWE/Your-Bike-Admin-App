@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:your_bike_admin/components/custom_dialogue.dart';
 import 'package:your_bike_admin/screens/screen_bike_details.dart';
 import 'package:your_bike_admin/utilities/app_image_path.dart';
 import 'package:your_bike_admin/utilities/app_size.dart';
@@ -32,82 +34,93 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(AppStrings.allBikeList),
-      ),
-      body: ListView(
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.all(25),
-        children: [
-          // brand list
-          DropdownMenu<String>(
-            hintText: AppStrings.selectBrand,
-            width: MediaQuery.of(context).size.width - 50,
-            enableFilter: true,
-            menuHeight: 200,
-            onSelected: (String? value) {
-              FocusManager.instance.primaryFocus?.unfocus();
-              // This is called when the user selects an item.
-              setState(() {
-                brandValue = value!;
-              });
+    return WillPopScope(
+      onWillPop: () async {
+        return await CustomDialogue.functional(
+            context: context,
+            onPressed: () {
+              // SystemNavigator.pop();
             },
-            dropdownMenuEntries: brandList.map<DropdownMenuEntry<String>>(
-              (String value) {
-                return DropdownMenuEntry<String>(
-                  value: value,
-                  label: value,
-                  style: ButtonStyle(
-                    textStyle: MaterialStateProperty.all(
-                      Theme.of(context).textTheme.displayMedium,
-                    ),
-                  ),
-                );
+            icon: Icons.logout,
+            message: AppStrings.doYouWantToLogout);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(AppStrings.allBikeList),
+        ),
+        body: ListView(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.all(25),
+          children: [
+            // brand list
+            DropdownMenu<String>(
+              hintText: AppStrings.selectBrand,
+              width: MediaQuery.of(context).size.width - 50,
+              enableFilter: true,
+              menuHeight: 200,
+              onSelected: (String? value) {
+                FocusManager.instance.primaryFocus?.unfocus();
+                // This is called when the user selects an item.
+                setState(() {
+                  brandValue = value!;
+                });
               },
-            ).toList(),
-          ),
-          AppSize.gapH20,
-
-          // cc list
-          DropdownMenu<String>(
-            hintText: AppStrings.selectCC,
-            width: MediaQuery.of(context).size.width - 50,
-            enableFilter: true,
-            menuHeight: 200,
-            onSelected: (String? value) {
-              FocusManager.instance.primaryFocus?.unfocus();
-              // This is called when the user selects an item.
-              setState(() {
-                ccValue = value!;
-              });
-            },
-            dropdownMenuEntries: ccList.map<DropdownMenuEntry<String>>(
-              (String value) {
-                return DropdownMenuEntry<String>(
-                  value: value,
-                  label: value,
-                  style: ButtonStyle(
-                    textStyle: MaterialStateProperty.all(
-                      Theme.of(context).textTheme.displayMedium,
+              dropdownMenuEntries: brandList.map<DropdownMenuEntry<String>>(
+                (String value) {
+                  return DropdownMenuEntry<String>(
+                    value: value,
+                    label: value,
+                    style: ButtonStyle(
+                      textStyle: MaterialStateProperty.all(
+                        Theme.of(context).textTheme.displayMedium,
+                      ),
                     ),
-                  ),
-                );
-              },
-            ).toList(),
-          ),
-          AppSize.gapH40,
+                  );
+                },
+              ).toList(),
+            ),
+            AppSize.gapH20,
 
-          // bike list
-          ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return _elementBike();
-              }),
-          AppSize.gapH40,
-        ],
+            // cc list
+            DropdownMenu<String>(
+              hintText: AppStrings.selectCC,
+              width: MediaQuery.of(context).size.width - 50,
+              enableFilter: true,
+              menuHeight: 200,
+              onSelected: (String? value) {
+                FocusManager.instance.primaryFocus?.unfocus();
+                // This is called when the user selects an item.
+                setState(() {
+                  ccValue = value!;
+                });
+              },
+              dropdownMenuEntries: ccList.map<DropdownMenuEntry<String>>(
+                (String value) {
+                  return DropdownMenuEntry<String>(
+                    value: value,
+                    label: value,
+                    style: ButtonStyle(
+                      textStyle: MaterialStateProperty.all(
+                        Theme.of(context).textTheme.displayMedium,
+                      ),
+                    ),
+                  );
+                },
+              ).toList(),
+            ),
+            AppSize.gapH40,
+
+            // bike list
+            ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return _elementBike();
+                }),
+            AppSize.gapH40,
+          ],
+        ),
       ),
     );
   }
@@ -117,7 +130,6 @@ class _HomePageState extends State<HomePage> {
       children: [
         GestureDetector(
           onTap: () {
-            print(":::::Tap:::::");
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (builder) => const BikeDetails(),
