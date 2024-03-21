@@ -49,4 +49,21 @@ class AppStrings {
   static const String doYouWantToDelete = "Do you want to delete ?";
   static const String login = "Login";
   static const String copyright = "copyright©neloy 2024";
+  static const String bikeNameExample = "R15M 2024 Edition";
+  static const String brandNameExample = "Yamaha";
+  static const String ccExample = "155";
+  static const String gearCountExample = "6";
+  static const String maxPowerCountExample = "13.5kW(18.4PS)/10000 RPM";
+  static const String maxTorqueCountExample = "14.2 Nm (1.4 kgfm) @7,500 RPM";
+  static const String mileageExample = "40 KM";
+  static const String engineOilCapacityExample = "1 L";
+  static const String seatHeightExample = "815";
+  static const String frontSuspensionExample = "Telescopic upside Down Fork (USD Fork)";
+  static const String rearSuspensionExample = "Linked-Type Mono-cross Suspension";
+  static const String frontBreakExample = "Disc with ABS";
+  static const String rearBreakExample = "Disc with ABS";
+  static const String frontWheelExample = "Alloy";
+  static const String rearWheelExample = "Alloy";
+  static const String frontTyreExample = "100/80-17";
+  static const String rearTyreExample = "100/80-17";
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:your_bike_admin/components/custom_dialogue.dart';
 import 'package:your_bike_admin/screens/screen_bike_details.dart';
+import 'package:your_bike_admin/screens/screen_user_login.dart';
 import 'package:your_bike_admin/utilities/app_image_path.dart';
 import 'package:your_bike_admin/utilities/app_size.dart';
 import 'package:your_bike_admin/utilities/app_strings.dart';
@@ -37,12 +37,18 @@ class _HomePageState extends State<HomePage> {
     return WillPopScope(
       onWillPop: () async {
         return await CustomDialogue.functional(
-            context: context,
-            onPressed: () {
-              // SystemNavigator.pop();
-            },
-            icon: Icons.logout,
-            message: AppStrings.doYouWantToLogout);
+          context: context,
+          onPressed: () {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (builder) => const Login(),
+              ),
+              (Route<dynamic> route) => false,
+            );
+          },
+          icon: Icons.logout,
+          message: AppStrings.doYouWantToLogout,
+        );
       },
       child: Scaffold(
         appBar: AppBar(
