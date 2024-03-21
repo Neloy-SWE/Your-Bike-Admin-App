@@ -13,6 +13,8 @@ class AppStrings {
   static const String selectCC = "Select CC";
   static const String bikeDetails = "Bike Details";
   static const String name = "Name";
+  static const String email = "Email";
+  static const String password = "Password";
   static const String brandName = "Brand Name";
   static const String cc = "CC";
   static const String gears = "Gears";
