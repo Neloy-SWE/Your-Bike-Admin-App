@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:your_bike_admin/network/api/api_login.dart';
 import 'package:your_bike_admin/screens/screen_home_page.dart';
 import 'package:your_bike_admin/utilities/app_size.dart';
 
@@ -22,6 +23,8 @@ class _LoginState extends State<Login> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  final _loginKey = GlobalKey<FormState>();
+
   @override
   void dispose() {
     emailController.dispose();
@@ -33,7 +36,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        return await CustomDialogue.functional(
+        return await CustomDialogue.decision(
           context: context,
           onPressed: () {
             SystemNavigator.pop();
@@ -57,28 +60,54 @@ class _LoginState extends State<Login> {
             ),
             AppSize.gapH80,
 
-            // email
-            CustomTextField.get(
-              context: context,
-              controller: emailController,
-              textInputType: TextInputType.emailAddress,
-              textInputAction: TextInputAction.next,
-              label: AppStrings.email,
-              hint: "bike",
-            ),
-            AppSize.gapH20,
+            // login form
+            Form(
+              key: _loginKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // phone
+                  CustomTextField.get(
+                    context: context,
+                    controller: emailController,
+                    textInputType: TextInputType.phone,
+                    textInputAction: TextInputAction.next,
+                    label: AppStrings.phone,
+                    hint: AppStrings.phoneHint,
+                    inputFormatters: [LengthLimitingTextInputFormatter(11)],
+                    validatorFunction: (value) {
+                      if (value!.isEmpty) {
+                        return AppStrings.emptyField;
+                      } else if (!value.startsWith("01") || value.length != 11) {
+                        return AppStrings.invalidPhone;
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
+                  AppSize.gapH20,
 
-            // password
-            CustomTextField.get(
-              context: context,
-              controller: passwordController,
-              textInputType: TextInputType.visiblePassword,
-              secure: true,
-              textInputAction: TextInputAction.done,
-              label: AppStrings.password,
-              hint: "bike",
+                  // password
+                  CustomTextField.get(
+                    context: context,
+                    controller: passwordController,
+                    textInputType: TextInputType.visiblePassword,
+                    secure: true,
+                    textInputAction: TextInputAction.done,
+                    label: AppStrings.password,
+                    hint: AppStrings.passwordHint,
+                    validatorFunction: (value) {
+                      if (value!.isEmpty) {
+                        return AppStrings.emptyField;
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
+                  AppSize.gapH40,
+                ],
+              ),
             ),
-            AppSize.gapH40,
 
             // login in button
             MaterialButton(
@@ -90,11 +119,16 @@ class _LoginState extends State<Login> {
                 ),
               ),
               onPressed: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (builder) => const HomePage(),
-                  ),
-                );
+                if (_loginKey.currentState!.validate()){
+                  print("validate ::::");
+                }
+                // LoginAPI().call();
+
+                // Navigator.of(context).pushReplacement(
+                //   MaterialPageRoute(
+                //     builder: (builder) => const HomePage(),
+                //   ),
+                // );
                 // CustomDialogue.simple(context: context, icon: Icons.verified_outlined, message: AppStrings.update, buttonText: AppStrings.done);
                 // CustomDialogue.simple(context: context, icon: Icons.error_outline_outlined, message: AppStrings.checkYourInternet, buttonText: AppStrings.goBack);
                 // CustomDialogue.functional(

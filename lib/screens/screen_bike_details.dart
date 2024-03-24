@@ -22,7 +22,7 @@ class _BikeDetailsState extends State<BikeDetails> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        return await CustomDialogue.functional(
+        return await CustomDialogue.decision(
           context: context,
           onPressed: () {
             Navigator.of(context).pushAndRemoveUntil(

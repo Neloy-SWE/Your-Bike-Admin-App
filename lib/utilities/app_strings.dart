@@ -13,8 +13,10 @@ class AppStrings {
   static const String selectCC = "Select CC";
   static const String bikeDetails = "Bike Details";
   static const String name = "Name";
-  static const String email = "Email";
+  static const String phone = "Phone";
+  static const String phoneHint = "015.....";
   static const String password = "Password";
+  static const String passwordHint = "*******";
   static const String brandName = "Brand Name";
   static const String cc = "CC";
   static const String gears = "Gears";
@@ -66,4 +68,6 @@ class AppStrings {
   static const String rearWheelExample = "Alloy";
   static const String frontTyreExample = "100/80-17";
   static const String rearTyreExample = "100/80-17";
+  static const String invalidPhone = "Invalid phone number!";
+  static const String emptyField = "Empty field!";
 }

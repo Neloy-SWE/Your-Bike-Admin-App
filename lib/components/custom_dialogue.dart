@@ -40,6 +40,7 @@ class CustomDialogue {
 
   static simple({
     required BuildContext context,
+    required void Function()? onPressed,
     required IconData icon,
     required String message,
     required String buttonText,
@@ -74,9 +75,7 @@ class CustomDialogue {
             MaterialButton(
               height: 50,
               elevation: 0,
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+              onPressed: onPressed,
               color: Colors.black,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
@@ -92,7 +91,7 @@ class CustomDialogue {
     );
   }
 
-  static functional({
+  static decision({
     required BuildContext context,
     required void Function()? onPressed,
     required IconData icon,
