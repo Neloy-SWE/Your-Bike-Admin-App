@@ -1,33 +1,37 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:your_bike_admin/network/api/api_login.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:your_bike_admin/network/helper/helper_login.dart';
 import 'package:your_bike_admin/screens/screen_home_page.dart';
 import 'package:your_bike_admin/utilities/app_size.dart';
 
 import '../components/custom_dialogue.dart';
 import '../components/custom_text_field.dart';
+import '../network/manager/manager_login.dart';
 import '../utilities/app_image_path.dart';
 import '../utilities/app_strings.dart';
 
 /// Created by Neloy on 3/21/2024
 /// Email: taufiqneloy.swe@gmail.com
 
-class Login extends StatefulWidget {
+class Login extends ConsumerStatefulWidget {
   const Login({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  ConsumerState<Login> createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> {
-  TextEditingController emailController = TextEditingController();
+class _LoginState extends ConsumerState<Login> implements LoginManager {
+  TextEditingController phoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   final _loginKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
-    emailController.dispose();
+    phoneController.dispose();
     passwordController.dispose();
     super.dispose();
   }
@@ -69,7 +73,7 @@ class _LoginState extends State<Login> {
                   // phone
                   CustomTextField.get(
                     context: context,
-                    controller: emailController,
+                    controller: phoneController,
                     textInputType: TextInputType.phone,
                     textInputAction: TextInputAction.next,
                     label: AppStrings.phone,
@@ -78,7 +82,8 @@ class _LoginState extends State<Login> {
                     validatorFunction: (value) {
                       if (value!.isEmpty) {
                         return AppStrings.emptyField;
-                      } else if (!value.startsWith("01") || value.length != 11) {
+                      } else if (!value.startsWith("01") ||
+                          value.length != 11) {
                         return AppStrings.invalidPhone;
                       } else {
                         return null;
@@ -119,8 +124,8 @@ class _LoginState extends State<Login> {
                 ),
               ),
               onPressed: () {
-                if (_loginKey.currentState!.validate()){
-                  print("validate ::::");
+                if (_loginKey.currentState!.validate()) {
+                  login(context: context);
                 }
                 // LoginAPI().call();
 
@@ -154,5 +159,51 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  Future<void> login({required BuildContext context}) async {
+    CustomDialogue.loading(context: context);
+    await LoginHelper().connection(
+      phone: phoneController.text.trim(),
+      password: passwordController.text.trim(),
+      manager: this,
+    );
+  }
+
+  @override
+  void fail({required String message}) {
+    Navigator.of(context).pop();
+    Timer(const Duration(seconds: 1), () {
+      CustomDialogue.simple(
+        context: context,
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        icon: Icons.error_outline_outlined,
+        message: message,
+        buttonText: AppStrings.close,
+      );
+    });
+  }
+
+  @override
+  void success({required String message}) {
+    Navigator.of(context).pop();
+    Timer(const Duration(seconds: 1), () {
+      CustomDialogue.simple(
+        context: context,
+        onPressed: () {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (builder) => const HomePage(),
+            ),
+            (Route<dynamic> route) => false,
+          );
+        },
+        icon: Icons.verified_outlined,
+        message: message,
+        buttonText: AppStrings.done,
+      );
+    });
   }
 }

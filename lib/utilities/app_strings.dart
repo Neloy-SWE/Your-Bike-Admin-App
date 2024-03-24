@@ -60,8 +60,10 @@ class AppStrings {
   static const String mileageExample = "40 KM";
   static const String engineOilCapacityExample = "1 L";
   static const String seatHeightExample = "815";
-  static const String frontSuspensionExample = "Telescopic upside Down Fork (USD Fork)";
-  static const String rearSuspensionExample = "Linked-Type Mono-cross Suspension";
+  static const String frontSuspensionExample =
+      "Telescopic upside Down Fork (USD Fork)";
+  static const String rearSuspensionExample =
+      "Linked-Type Mono-cross Suspension";
   static const String frontBreakExample = "Disc with ABS";
   static const String rearBreakExample = "Disc with ABS";
   static const String frontWheelExample = "Alloy";
@@ -70,4 +72,5 @@ class AppStrings {
   static const String rearTyreExample = "100/80-17";
   static const String invalidPhone = "Invalid phone number!";
   static const String emptyField = "Empty field!";
+  static const String close = "Close";
 }
