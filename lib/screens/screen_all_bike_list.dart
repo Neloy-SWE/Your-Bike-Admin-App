@@ -7,6 +7,7 @@ import 'package:your_bike_admin/components/custom_dialogue.dart';
 import 'package:your_bike_admin/network/helper/helper_get_all_bikes.dart';
 import 'package:your_bike_admin/network/manager/manager_get_all_bikes.dart';
 import 'package:your_bike_admin/network/model/model_bike.dart';
+import 'package:your_bike_admin/screens/screen_add_bike.dart';
 import 'package:your_bike_admin/screens/screen_bike_details.dart';
 import 'package:your_bike_admin/screens/screen_user_login.dart';
 import 'package:your_bike_admin/utilities/app_image_path.dart';
@@ -18,14 +19,14 @@ import '../network/data/provider_get_all_bike.dart';
 /// Created by Neloy on 3/16/2024
 /// Email: taufiqneloy.swe@gmail.com
 
-class HomePage extends ConsumerStatefulWidget {
-  const HomePage({super.key});
+class AllBikeList extends ConsumerStatefulWidget {
+  const AllBikeList({super.key});
 
   @override
-  ConsumerState<HomePage> createState() => _HomePageState();
+  ConsumerState<AllBikeList> createState() => _HomePageState();
 }
 
-class _HomePageState extends ConsumerState<HomePage>
+class _HomePageState extends ConsumerState<AllBikeList>
     implements GetAllBikesManager {
   List<String> brandList = [];
   List<String> ccList = [];
@@ -64,6 +65,27 @@ class _HomePageState extends ConsumerState<HomePage>
       child: Scaffold(
         appBar: AppBar(
           title: const Text(AppStrings.allBikeList),
+        ),
+        floatingActionButton: MaterialButton(
+          elevation: 0,
+          height: 50,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+              10,
+            ),
+          ),
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (builder) => const AddBike(),
+              ),
+            );
+          },
+          color: Colors.black,
+          child: Text(
+            AppStrings.addNewBike,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
         ),
         body: ref.watch(allBikeList).isEmpty
             ? const SizedBox()
@@ -139,7 +161,7 @@ class _HomePageState extends ConsumerState<HomePage>
                         return _elementBike(
                             bike: ref.watch(allBikeList)[index]);
                       }),
-                  AppSize.gapH40,
+                  AppSize.gapH60,
                 ],
               ),
       ),
