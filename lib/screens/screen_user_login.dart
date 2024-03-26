@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:your_bike_admin/network/helper/helper_login.dart';
 import 'package:your_bike_admin/screens/screen_home_page.dart';
 import 'package:your_bike_admin/utilities/app_size.dart';
@@ -16,14 +15,14 @@ import '../utilities/app_strings.dart';
 /// Created by Neloy on 3/21/2024
 /// Email: taufiqneloy.swe@gmail.com
 
-class Login extends ConsumerStatefulWidget {
+class Login extends StatefulWidget {
   const Login({super.key});
 
   @override
-  ConsumerState<Login> createState() => _LoginState();
+  State<Login> createState() => _LoginState();
 }
 
-class _LoginState extends ConsumerState<Login> implements LoginManager {
+class _LoginState extends State<Login> implements LoginManager {
   TextEditingController phoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -173,37 +172,43 @@ class _LoginState extends ConsumerState<Login> implements LoginManager {
   @override
   void fail({required String message}) {
     Navigator.of(context).pop();
-    Timer(const Duration(seconds: 1), () {
-      CustomDialogue.simple(
-        context: context,
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-        icon: Icons.error_outline_outlined,
-        message: message,
-        buttonText: AppStrings.close,
-      );
-    });
+    Timer(
+      const Duration(seconds: 1),
+      () {
+        CustomDialogue.simple(
+          context: context,
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Icons.error_outline_outlined,
+          message: message,
+          buttonText: AppStrings.close,
+        );
+      },
+    );
   }
 
   @override
   void success({required String message}) {
     Navigator.of(context).pop();
-    Timer(const Duration(seconds: 1), () {
-      CustomDialogue.simple(
-        context: context,
-        onPressed: () {
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-              builder: (builder) => const HomePage(),
-            ),
-            (Route<dynamic> route) => false,
-          );
-        },
-        icon: Icons.verified_outlined,
-        message: message,
-        buttonText: AppStrings.done,
-      );
-    });
+    Timer(
+      const Duration(seconds: 1),
+      () {
+        CustomDialogue.simple(
+          context: context,
+          onPressed: () {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (builder) => const HomePage(),
+              ),
+              (Route<dynamic> route) => false,
+            );
+          },
+          icon: Icons.verified_outlined,
+          message: message,
+          buttonText: AppStrings.done,
+        );
+      },
+    );
   }
 }

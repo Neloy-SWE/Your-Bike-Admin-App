@@ -22,8 +22,8 @@ class LoginHelper implements LoginManager {
     if (result != ValueConfigs.error) {
       BaseModel<String> baseModel = BaseModel.fromJson(result);
       if (baseModel.status == ValueConfigs.success) {
-        var box = await Hive.openBox("token");
-        await box.put("token", baseModel.data);
+        var box = await Hive.openBox(ValueConfigs.token);
+        await box.put(ValueConfigs.token, baseModel.data);
         manager.success(
           message: baseModel.message!,
         );
