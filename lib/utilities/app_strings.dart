@@ -8,6 +8,8 @@ class AppStrings {
   static const String welcome = "Welcome";
   static const String yourBikeAdminApp = "Your Bike Admin App";
   static const String allBikeList = "All Bike List";
+  static const String addNewBike = "Add New Bike";
+  static const String addBikeImage = "Add Bike Image";
   static const String tapToSeeEditDetails = "Tap To See/Edit Details";
   static const String selectBrand = "Select Brand";
   static const String selectCC = "Select CC";
@@ -24,6 +26,7 @@ class AppStrings {
   static const String maxTorque = "MaxTorque";
   static const String mileage = "Mileage";
   static const String fuelTankCapacity = "Fuel Tank Capacity";
+  static const String fuelTankCapacityExample = "12 L";
   static const String engineOilCapacity = "Engine Oil Capacity";
   static const String seatHeight = "Seat Height";
   static const String frontSuspension = "Front Suspension";

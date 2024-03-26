@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:your_bike_admin/components/custom_dialogue.dart';
 import 'package:your_bike_admin/components/custom_text_field.dart';
 import 'package:your_bike_admin/screens/screen_user_login.dart';
@@ -35,6 +38,8 @@ class _EditBikeDetailsState extends State<EditBikeDetails> {
   TextEditingController rearWheelController = TextEditingController();
   TextEditingController frontTyreController = TextEditingController();
   TextEditingController rearTyreController = TextEditingController();
+
+  String imageData = "";
 
   @override
   void dispose() {
@@ -91,6 +96,54 @@ class _EditBikeDetailsState extends State<EditBikeDetails> {
           physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.all(25),
           children: [
+            // image selection part
+            imageData.isNotEmpty
+                ? Image.memory(
+                    base64Decode(imageData),
+                    width: double.infinity,
+                    height: 200,
+                    fit: BoxFit.fill,
+                  )
+                : Container(
+                    height: 200,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black12, width: 1),
+                    ),
+                    child: const Icon(
+                      Icons.image,
+                      color: Colors.black12,
+                      size: 100,
+                    ),
+                  ),
+            AppSize.gapH10,
+
+            TextButton.icon(
+              onPressed: () {
+                pickImage();
+              },
+              style: TextButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                    10,
+                  ),
+                  side: const BorderSide(
+                    color: Colors.black,
+                    width: 1,
+                  ),
+                ),
+              ),
+              icon: const Icon(
+                Icons.image,
+                color: Colors.black,
+              ),
+              label: Text(
+                AppStrings.addBikeImage,
+                style: Theme.of(context).textTheme.displayMedium,
+              ),
+            ),
+            AppSize.gapH40,
+
             // name
             CustomTextField.get(
               context: context,
@@ -175,7 +228,7 @@ class _EditBikeDetailsState extends State<EditBikeDetails> {
               textInputType: TextInputType.text,
               textInputAction: TextInputAction.next,
               label: AppStrings.fuelTankCapacity,
-              hint: "bike",
+              hint: AppStrings.fuelTankCapacityExample,
             ),
             AppSize.gapH20,
 
@@ -347,5 +400,14 @@ class _EditBikeDetailsState extends State<EditBikeDetails> {
         ),
       ),
     );
+  }
+
+  Future pickImage() async {
+    final selectImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    List<int> bytes = await selectImage!.readAsBytes();
+    setState(() {
+      imageData = base64Encode(bytes);
+    });
   }
 }

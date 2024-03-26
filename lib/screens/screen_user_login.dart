@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:your_bike_admin/network/helper/helper_login.dart';
-import 'package:your_bike_admin/screens/screen_home_page.dart';
+import 'package:your_bike_admin/screens/screen_all_bike_list.dart';
 import 'package:your_bike_admin/utilities/app_size.dart';
 
 import '../components/custom_dialogue.dart';
@@ -199,7 +199,7 @@ class _LoginState extends State<Login> implements LoginManager {
           onPressed: () {
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: (builder) => const HomePage(),
+                builder: (builder) => const AllBikeList(),
               ),
               (Route<dynamic> route) => false,
             );
