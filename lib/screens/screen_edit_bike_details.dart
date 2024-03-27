@@ -120,7 +120,7 @@ class _EditBikeDetailsState extends State<EditBikeDetails> {
 
             TextButton.icon(
               onPressed: () {
-                pickImage();
+                _pickImage();
               },
               style: TextButton.styleFrom(
                 shape: RoundedRectangleBorder(
@@ -402,7 +402,7 @@ class _EditBikeDetailsState extends State<EditBikeDetails> {
     );
   }
 
-  Future pickImage() async {
+  Future _pickImage() async {
     final selectImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     List<int> bytes = await selectImage!.readAsBytes();

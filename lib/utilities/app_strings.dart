@@ -76,4 +76,6 @@ class AppStrings {
   static const String invalidPhone = "Invalid phone number!";
   static const String emptyField = "Empty field!";
   static const String close = "Close";
+  static const String add = "Add";
+  static const String pleaseSelectImage = "Please select image!";
 }
