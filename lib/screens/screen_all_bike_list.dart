@@ -178,7 +178,9 @@ class _HomePageState extends ConsumerState<AllBikeList>
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (builder) => const BikeDetails(),
+                builder: (builder) => BikeDetails(
+                  id: bike.id!,
+                ),
               ),
             );
           },

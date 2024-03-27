@@ -1,23 +1,43 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:your_bike_admin/network/model/model_bike.dart';
 import 'package:your_bike_admin/screens/screen_edit_bike_details.dart';
 import 'package:your_bike_admin/screens/screen_user_login.dart';
 import 'package:your_bike_admin/utilities/app_size.dart';
 
 import '../components/custom_dialogue.dart';
+import '../network/data/provider_bike_details.dart';
+import '../network/helper/helper_bike_details.dart';
+import '../network/manager/manager_bike_details.dart';
 import '../utilities/app_image_path.dart';
 import '../utilities/app_strings.dart';
 
 /// Created by Neloy on 3/19/2024
 /// Email: taufiqneloy.swe@gmail.com
 
-class BikeDetails extends StatefulWidget {
-  const BikeDetails({super.key});
+class BikeDetails extends ConsumerStatefulWidget {
+  final int id;
+  const BikeDetails({super.key, required this.id});
 
   @override
-  State<BikeDetails> createState() => _BikeDetailsState();
+  ConsumerState<BikeDetails> createState() => _BikeDetailsState();
 }
 
-class _BikeDetailsState extends State<BikeDetails> {
+class _BikeDetailsState extends ConsumerState<BikeDetails> implements BikeDetailsManager {
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback(
+          (_) {
+          _getBikeDetails();
+      },
+    );
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -244,6 +264,49 @@ class _BikeDetailsState extends State<BikeDetails> {
         ),
         AppSize.gapH20,
       ],
+    );
+  }
+  Future<void> _getBikeDetails() async {
+    CustomDialogue.loading(context: context);
+    await BikeDetailsHelper().connection( id: widget.id, manager: this,);
+  }
+
+  @override
+  void fail({required String message}) {
+    Navigator.of(context).pop();
+    Timer(
+      const Duration(seconds: 1),
+          () {
+        CustomDialogue.simple(
+          context: context,
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Icons.error_outline_outlined,
+          message: message,
+          buttonText: AppStrings.close,
+        );
+      },
+    );
+  }
+
+  @override
+  void success({required BikeModel bike, required String message}) {
+    ref.watch(bikeDetails.notifier).state = bike;
+    Navigator.of(context).pop();
+    Timer(
+      const Duration(seconds: 1),
+          () {
+        CustomDialogue.simple(
+          context: context,
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Icons.verified_outlined,
+          message: message,
+          buttonText: AppStrings.close,
+        );
+      },
     );
   }
 }
