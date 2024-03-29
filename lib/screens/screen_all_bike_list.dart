@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -295,23 +294,5 @@ class _HomePageState extends ConsumerState<AllBikeList>
         );
       },
     );
-  }
-
-  Uint8List? base64ToByte(String? imageData) {
-    try {
-      if (imageData != null) {
-        return base64Decode(
-          imageData.contains('base64,')
-              ? imageData.substring(
-                  imageData.indexOf('base64,') + 7,
-                )
-              : imageData,
-        );
-      } else {
-        return null;
-      }
-    } catch (e) {
-      return null;
-    }
   }
 }

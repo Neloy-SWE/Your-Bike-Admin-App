@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,19 +20,26 @@ import '../utilities/app_strings.dart';
 
 class BikeDetails extends ConsumerStatefulWidget {
   final int id;
+
   const BikeDetails({super.key, required this.id});
 
   @override
   ConsumerState<BikeDetails> createState() => _BikeDetailsState();
 }
 
-class _BikeDetailsState extends ConsumerState<BikeDetails> implements BikeDetailsManager {
+class _BikeDetailsState extends ConsumerState<BikeDetails>
+    implements BikeDetailsManager {
+  BikeModel? bike;
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback(
-          (_) {
+      (_) {
+        if (ref.watch(bikeDetails).name == null) {
           _getBikeDetails();
+        } else {
+          bike = ref.watch(bikeDetails);
+        }
       },
     );
 
@@ -66,172 +74,176 @@ class _BikeDetailsState extends ConsumerState<BikeDetails> implements BikeDetail
             icon: const Icon(Icons.chevron_left),
           ),
         ),
-        body: ListView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.all(25),
-          children: [
-            // bike image
-            Image.asset(
-              AppImagePath.cover,
-              height: 200,
-              width: double.infinity,
-              fit: BoxFit.fill,
-            ),
-            AppSize.gapH40,
-
-            // details
-            // name
-            _detailsContainer(
-              title: AppStrings.name,
-              details: "R15M (2024 Edition)",
-            ),
-
-            // brand name
-            _detailsContainer(
-              title: AppStrings.brandName,
-              details: "Yamaha",
-            ),
-
-            // cc
-            _detailsContainer(
-              title: AppStrings.cc,
-              details: "Yamaha",
-            ),
-
-            // gears
-            _detailsContainer(
-              title: AppStrings.gears,
-              details: "Yamaha",
-            ),
-
-            // max power
-            _detailsContainer(
-              title: AppStrings.maxPower,
-              details: "Yamaha",
-            ),
-
-            // max torque
-            _detailsContainer(
-              title: AppStrings.maxTorque,
-              details: "Yamaha",
-            ),
-
-            // mileage
-            _detailsContainer(
-              title: AppStrings.mileage,
-              details: "Yamaha",
-            ),
-
-            // fuel tank capacity
-            _detailsContainer(
-              title: AppStrings.fuelTankCapacity,
-              details: "Yamaha",
-            ),
-
-            // engine oil capacity
-            _detailsContainer(
-              title: AppStrings.engineOilCapacity,
-              details: "Yamaha",
-            ),
-
-            // seat height
-            _detailsContainer(
-              title: AppStrings.seatHeight,
-              details: "Yamaha",
-            ),
-
-            // front suspension
-            _detailsContainer(
-              title: AppStrings.frontSuspension,
-              details: "Yamaha",
-            ),
-
-            // rear suspension
-            _detailsContainer(
-              title: AppStrings.rearSuspension,
-              details: "Yamaha",
-            ),
-
-            // front break
-            _detailsContainer(
-              title: AppStrings.frontBreak,
-              details: "Yamaha",
-            ),
-
-            // rear break
-            _detailsContainer(
-              title: AppStrings.rearBreak,
-              details: "Yamaha",
-            ),
-
-            // front wheel
-            _detailsContainer(
-              title: AppStrings.frontWheel,
-              details: "Yamaha",
-            ),
-
-            // rear wheel
-            _detailsContainer(
-              title: AppStrings.rearWheel,
-              details: "Yamaha",
-            ),
-
-            // front tyre
-            _detailsContainer(
-              title: AppStrings.frontTyre,
-              details: "Yamaha",
-            ),
-
-            // rear tyre
-            _detailsContainer(
-              title: AppStrings.rearTyre,
-              details: "Yamaha",
-            ),
-            AppSize.gapH20,
-
-            // edit button
-            MaterialButton(
-              elevation: 0,
-              height: 50,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(
-                  10,
-                ),
-              ),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (builder) => const EditBikeDetails(),
+        body: ref.watch(bikeDetails).name == null
+            ? const SizedBox()
+            : ListView(
+                physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.all(25),
+                children: [
+                  // bike image
+                  Image.memory(
+                    base64Decode(
+                      const Base64Codec().normalize(bike!.image!),
+                    ),
+                    height: 200,
+                    width: double.infinity,
+                    fit: BoxFit.fill,
                   ),
-                );
-              },
-              color: Colors.black,
-              child: Text(
-                AppStrings.edit,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-            ),
-            AppSize.gapH10,
+                  AppSize.gapH40,
 
-            // delete button
-            MaterialButton(
-              elevation: 0,
-              height: 50,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(
-                  10,
-                ),
+                  // details
+                  // name
+                  _detailsContainer(
+                    title: AppStrings.name,
+                    details: bike!.name!,
+                  ),
+
+                  // brand name
+                  _detailsContainer(
+                    title: AppStrings.brandName,
+                    details: bike!.brandName!,
+                  ),
+
+                  // cc
+                  _detailsContainer(
+                    title: AppStrings.cc,
+                    details: bike!.cc.toString(),
+                  ),
+
+                  // gears
+                  _detailsContainer(
+                    title: AppStrings.gears,
+                    details: bike!.gears.toString(),
+                  ),
+
+                  // max power
+                  _detailsContainer(
+                    title: AppStrings.maxPower,
+                    details: bike!.maxPower!,
+                  ),
+
+                  // max torque
+                  _detailsContainer(
+                    title: AppStrings.maxTorque,
+                    details: bike!.maxTorque!,
+                  ),
+
+                  // mileage
+                  _detailsContainer(
+                    title: AppStrings.mileage,
+                    details: bike!.mileage!,
+                  ),
+
+                  // fuel tank capacity
+                  _detailsContainer(
+                    title: AppStrings.fuelTankCapacity,
+                    details: bike!.fuelTankCapacity.toString(),
+                  ),
+
+                  // engine oil capacity
+                  _detailsContainer(
+                    title: AppStrings.engineOilCapacity,
+                    details: bike!.engineOilCapacity.toString(),
+                  ),
+
+                  // seat height
+                  _detailsContainer(
+                    title: AppStrings.seatHeight,
+                    details: bike!.seatHeight.toString(),
+                  ),
+
+                  // front suspension
+                  _detailsContainer(
+                    title: AppStrings.frontSuspension,
+                    details: bike!.frontSuspension!,
+                  ),
+
+                  // rear suspension
+                  _detailsContainer(
+                    title: AppStrings.rearSuspension,
+                    details: bike!.rearSuspension!,
+                  ),
+
+                  // front break
+                  _detailsContainer(
+                    title: AppStrings.frontBreak,
+                    details: bike!.frontBreak!,
+                  ),
+
+                  // rear break
+                  _detailsContainer(
+                    title: AppStrings.rearBreak,
+                    details: bike!.rearBreak!,
+                  ),
+
+                  // front wheel
+                  _detailsContainer(
+                    title: AppStrings.frontWheel,
+                    details: bike!.frontWheel!,
+                  ),
+
+                  // rear wheel
+                  _detailsContainer(
+                    title: AppStrings.rearWheel,
+                    details: bike!.rearBreak!,
+                  ),
+
+                  // front tyre
+                  _detailsContainer(
+                    title: AppStrings.frontTyre,
+                    details: bike!.frontTyre!,
+                  ),
+
+                  // rear tyre
+                  _detailsContainer(
+                    title: AppStrings.rearTyre,
+                    details: bike!.rearTyre!,
+                  ),
+                  AppSize.gapH20,
+
+                  // edit button
+                  MaterialButton(
+                    elevation: 0,
+                    height: 50,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        10,
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (builder) => const EditBikeDetails(),
+                        ),
+                      );
+                    },
+                    color: Colors.black,
+                    child: Text(
+                      AppStrings.edit,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                  ),
+                  AppSize.gapH10,
+
+                  // delete button
+                  MaterialButton(
+                    elevation: 0,
+                    height: 50,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        10,
+                      ),
+                    ),
+                    onPressed: () {},
+                    color: Colors.red,
+                    child: Text(
+                      AppStrings.delete,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                  ),
+                  AppSize.gapH40,
+                ],
               ),
-              onPressed: () {},
-              color: Colors.red,
-              child: Text(
-                AppStrings.delete,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-            ),
-            AppSize.gapH40,
-          ],
-        ),
       ),
     );
   }
@@ -266,9 +278,13 @@ class _BikeDetailsState extends ConsumerState<BikeDetails> implements BikeDetail
       ],
     );
   }
+
   Future<void> _getBikeDetails() async {
     CustomDialogue.loading(context: context);
-    await BikeDetailsHelper().connection( id: widget.id, manager: this,);
+    await BikeDetailsHelper().connection(
+      id: widget.id,
+      manager: this,
+    );
   }
 
   @override
@@ -276,7 +292,7 @@ class _BikeDetailsState extends ConsumerState<BikeDetails> implements BikeDetail
     Navigator.of(context).pop();
     Timer(
       const Duration(seconds: 1),
-          () {
+      () {
         CustomDialogue.simple(
           context: context,
           onPressed: () {
@@ -293,10 +309,11 @@ class _BikeDetailsState extends ConsumerState<BikeDetails> implements BikeDetail
   @override
   void success({required BikeModel bike, required String message}) {
     ref.watch(bikeDetails.notifier).state = bike;
+    this.bike = bike;
     Navigator.of(context).pop();
     Timer(
       const Duration(seconds: 1),
-          () {
+      () {
         CustomDialogue.simple(
           context: context,
           onPressed: () {
