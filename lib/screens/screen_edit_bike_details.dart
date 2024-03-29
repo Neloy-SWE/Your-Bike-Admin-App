@@ -43,36 +43,39 @@ class _EditBikeDetailsState extends ConsumerState<EditBikeDetails> {
   TextEditingController rearTyreController = TextEditingController();
 
   String imageData = "";
+  String currentName = "";
+
+  final _editBikeKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback(
-            (_) {
-              BikeModel bike = ref.watch(bikeDetails);
-              nameController.text = bike.name ?? "";
-              brandNameController.text = bike.brandName ?? "";
-              ccController.text = bike.cc.toString();
-              gearsController.text = bike.gears.toString();
-              maxPowerController.text = bike.maxPower ?? "";
-              maxTorqueController.text = bike.maxTorque ?? "";
-              mileageController.text = bike.mileage ?? "";
-              fuelTankCapacityController.text = bike.fuelTankCapacity.toString();
-              engineOilCapacityController.text = bike.engineOilCapacity.toString();
-              seatHeightController.text = bike.seatHeight.toString();
-              frontSuspensionController.text = bike.frontSuspension ?? "";
-              rearSuspensionController.text = bike.rearSuspension ?? "";
-              frontBreakController.text = bike.frontBreak ?? "";
-              rearBreakController.text = bike.rearBreak ?? "";
-              frontWheelController.text = bike.frontWheel ?? "";
-              rearWheelController.text = bike.rearWheel ?? "";
-              frontTyreController.text = bike.frontTyre ?? "";
-              rearTyreController.text = bike.rearTyre ?? "";
+      (_) {
+        BikeModel bike = ref.watch(bikeDetails);
+        nameController.text = bike.name ?? "";
+        currentName = bike.name ?? "";
+        brandNameController.text = bike.brandName ?? "";
+        ccController.text = bike.cc.toString();
+        gearsController.text = bike.gears.toString();
+        maxPowerController.text = bike.maxPower ?? "";
+        maxTorqueController.text = bike.maxTorque ?? "";
+        mileageController.text = bike.mileage ?? "";
+        fuelTankCapacityController.text = bike.fuelTankCapacity.toString();
+        engineOilCapacityController.text = bike.engineOilCapacity.toString();
+        seatHeightController.text = bike.seatHeight.toString();
+        frontSuspensionController.text = bike.frontSuspension ?? "";
+        rearSuspensionController.text = bike.rearSuspension ?? "";
+        frontBreakController.text = bike.frontBreak ?? "";
+        rearBreakController.text = bike.rearBreak ?? "";
+        frontWheelController.text = bike.frontWheel ?? "";
+        rearWheelController.text = bike.rearWheel ?? "";
+        frontTyreController.text = bike.frontTyre ?? "";
+        rearTyreController.text = bike.rearTyre ?? "";
 
-              setState(() {
-                imageData = bike.image ?? "";
-              });
-
-        },
+        setState(() {
+          imageData = bike.image ?? "";
+        });
+      },
     );
     super.initState();
   }
@@ -180,203 +183,339 @@ class _EditBikeDetailsState extends ConsumerState<EditBikeDetails> {
             ),
             AppSize.gapH40,
 
-            // name
-            CustomTextField.get(
-              context: context,
-              controller: nameController,
-              textInputType: TextInputType.text,
-              textInputAction: TextInputAction.next,
-              label: AppStrings.name,
-              hint: AppStrings.bikeNameExample,
-            ),
-            AppSize.gapH20,
+            Form(
+              key: _editBikeKey,
+              child: Column(
+                children: [
+                  // name
+                  CustomTextField.get(
+                    context: context,
+                    controller: nameController,
+                    textInputType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    label: AppStrings.name,
+                    hint: AppStrings.bikeNameExample,
+                    validatorFunction: (value) {
+                      if (value == currentName) {
+                        return AppStrings.sameNameWillNotAcceptable;
+                      }
+                      if (value!.isNotEmpty) {
+                        return null;
+                      } else {
+                        return AppStrings.emptyField;
+                      }
+                    },
+                  ),
+                  AppSize.gapH20,
 
-            // brand name
-            CustomTextField.get(
-              context: context,
-              controller: nameController,
-              textInputType: TextInputType.text,
-              textInputAction: TextInputAction.next,
-              label: AppStrings.brandName,
-              hint: AppStrings.brandNameExample,
-            ),
-            AppSize.gapH20,
+                  // brand name
+                  CustomTextField.get(
+                    context: context,
+                    controller: brandNameController,
+                    textInputType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    label: AppStrings.brandName,
+                    hint: AppStrings.brandNameExample,
+                    validatorFunction: (value) {
+                      if (value!.isNotEmpty) {
+                        return null;
+                      } else {
+                        return AppStrings.emptyField;
+                      }
+                    },
+                  ),
+                  AppSize.gapH20,
 
-            // cc
-            CustomTextField.get(
-              context: context,
-              controller: nameController,
-              textInputType: TextInputType.text,
-              textInputAction: TextInputAction.next,
-              label: AppStrings.cc,
-              hint: AppStrings.ccExample,
-            ),
-            AppSize.gapH20,
+                  // cc
+                  CustomTextField.get(
+                    context: context,
+                    controller: ccController,
+                    textInputType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    label: AppStrings.cc,
+                    hint: AppStrings.ccExample,
+                    validatorFunction: (value) {
+                      if (value!.isNotEmpty) {
+                        return null;
+                      } else {
+                        return AppStrings.emptyField;
+                      }
+                    },
+                  ),
+                  AppSize.gapH20,
 
-            // gears
-            CustomTextField.get(
-              context: context,
-              controller: nameController,
-              textInputType: TextInputType.text,
-              textInputAction: TextInputAction.next,
-              label: AppStrings.gears,
-              hint: AppStrings.gearCountExample,
-            ),
-            AppSize.gapH20,
+                  // gears
+                  CustomTextField.get(
+                    context: context,
+                    controller: gearsController,
+                    textInputType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    label: AppStrings.gears,
+                    hint: AppStrings.gearCountExample,
+                    validatorFunction: (value) {
+                      if (value!.isNotEmpty) {
+                        return null;
+                      } else {
+                        return AppStrings.emptyField;
+                      }
+                    },
+                  ),
+                  AppSize.gapH20,
 
-            // max power
-            CustomTextField.get(
-              context: context,
-              controller: nameController,
-              textInputType: TextInputType.text,
-              textInputAction: TextInputAction.next,
-              label: AppStrings.maxPower,
-              hint: AppStrings.maxPowerCountExample,
-            ),
-            AppSize.gapH20,
+                  // max power
+                  CustomTextField.get(
+                    context: context,
+                    controller: maxPowerController,
+                    textInputType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    label: AppStrings.maxPower,
+                    hint: AppStrings.maxPowerCountExample,
+                    validatorFunction: (value) {
+                      if (value!.isNotEmpty) {
+                        return null;
+                      } else {
+                        return AppStrings.emptyField;
+                      }
+                    },
+                  ),
+                  AppSize.gapH20,
 
-            // max torque
-            CustomTextField.get(
-              context: context,
-              controller: nameController,
-              textInputType: TextInputType.text,
-              textInputAction: TextInputAction.next,
-              label: AppStrings.maxTorque,
-              hint: AppStrings.maxTorqueCountExample,
-            ),
-            AppSize.gapH20,
+                  // max torque
+                  CustomTextField.get(
+                    context: context,
+                    controller: maxTorqueController,
+                    textInputType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    label: AppStrings.maxTorque,
+                    hint: AppStrings.maxTorqueCountExample,
+                    validatorFunction: (value) {
+                      if (value!.isNotEmpty) {
+                        return null;
+                      } else {
+                        return AppStrings.emptyField;
+                      }
+                    },
+                  ),
+                  AppSize.gapH20,
 
-            // mileage
-            CustomTextField.get(
-              context: context,
-              controller: nameController,
-              textInputType: TextInputType.text,
-              textInputAction: TextInputAction.next,
-              label: AppStrings.mileage,
-              hint: AppStrings.mileageExample,
-            ),
-            AppSize.gapH20,
+                  // mileage
+                  CustomTextField.get(
+                    context: context,
+                    controller: mileageController,
+                    textInputType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    label: AppStrings.mileage,
+                    hint: AppStrings.mileageExample,
+                    validatorFunction: (value) {
+                      if (value!.isNotEmpty) {
+                        return null;
+                      } else {
+                        return AppStrings.emptyField;
+                      }
+                    },
+                  ),
+                  AppSize.gapH20,
 
-            // fuel tank capacity
-            CustomTextField.get(
-              context: context,
-              controller: nameController,
-              textInputType: TextInputType.text,
-              textInputAction: TextInputAction.next,
-              label: AppStrings.fuelTankCapacity,
-              hint: AppStrings.fuelTankCapacityExample,
-            ),
-            AppSize.gapH20,
+                  // fuel tank capacity
+                  CustomTextField.get(
+                    context: context,
+                    controller: fuelTankCapacityController,
+                    textInputType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    label: AppStrings.fuelTankCapacity,
+                    hint: AppStrings.fuelTankCapacityExample,
+                    validatorFunction: (value) {
+                      if (value!.isNotEmpty) {
+                        return null;
+                      } else {
+                        return AppStrings.emptyField;
+                      }
+                    },
+                  ),
+                  AppSize.gapH20,
 
-            // engine oil capacity
-            CustomTextField.get(
-              context: context,
-              controller: nameController,
-              textInputType: TextInputType.text,
-              textInputAction: TextInputAction.next,
-              label: AppStrings.engineOilCapacity,
-              hint: AppStrings.engineOilCapacityExample,
-            ),
-            AppSize.gapH20,
+                  // engine oil capacity
+                  CustomTextField.get(
+                    context: context,
+                    controller: engineOilCapacityController,
+                    textInputType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    label: AppStrings.engineOilCapacity,
+                    hint: AppStrings.engineOilCapacityExample,
+                    validatorFunction: (value) {
+                      if (value!.isNotEmpty) {
+                        return null;
+                      } else {
+                        return AppStrings.emptyField;
+                      }
+                    },
+                  ),
+                  AppSize.gapH20,
 
-            // seat height
-            CustomTextField.get(
-              context: context,
-              controller: nameController,
-              textInputType: TextInputType.text,
-              textInputAction: TextInputAction.next,
-              label: AppStrings.seatHeight,
-              hint: AppStrings.seatHeightExample,
-            ),
-            AppSize.gapH20,
+                  // seat height
+                  CustomTextField.get(
+                    context: context,
+                    controller: seatHeightController,
+                    textInputType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    label: AppStrings.seatHeight,
+                    hint: AppStrings.seatHeightExample,
+                    validatorFunction: (value) {
+                      if (value!.isNotEmpty) {
+                        return null;
+                      } else {
+                        return AppStrings.emptyField;
+                      }
+                    },
+                  ),
+                  AppSize.gapH20,
 
-            // front suspension
-            CustomTextField.get(
-              context: context,
-              controller: nameController,
-              textInputType: TextInputType.text,
-              textInputAction: TextInputAction.next,
-              label: AppStrings.frontSuspension,
-              hint: AppStrings.frontSuspensionExample,
-            ),
-            AppSize.gapH20,
+                  // front suspension
+                  CustomTextField.get(
+                    context: context,
+                    controller: frontSuspensionController,
+                    textInputType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    label: AppStrings.frontSuspension,
+                    hint: AppStrings.frontSuspensionExample,
+                    validatorFunction: (value) {
+                      if (value!.isNotEmpty) {
+                        return null;
+                      } else {
+                        return AppStrings.emptyField;
+                      }
+                    },
+                  ),
+                  AppSize.gapH20,
 
-            // rear suspension
-            CustomTextField.get(
-              context: context,
-              controller: nameController,
-              textInputType: TextInputType.text,
-              textInputAction: TextInputAction.next,
-              label: AppStrings.rearSuspension,
-              hint: AppStrings.rearSuspensionExample,
-            ),
-            AppSize.gapH20,
+                  // rear suspension
+                  CustomTextField.get(
+                    context: context,
+                    controller: rearSuspensionController,
+                    textInputType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    label: AppStrings.rearSuspension,
+                    hint: AppStrings.rearSuspensionExample,
+                    validatorFunction: (value) {
+                      if (value!.isNotEmpty) {
+                        return null;
+                      } else {
+                        return AppStrings.emptyField;
+                      }
+                    },
+                  ),
+                  AppSize.gapH20,
 
-            // front break
-            CustomTextField.get(
-              context: context,
-              controller: nameController,
-              textInputType: TextInputType.text,
-              textInputAction: TextInputAction.next,
-              label: AppStrings.frontBreak,
-              hint: AppStrings.frontBreakExample,
-            ),
-            AppSize.gapH20,
+                  // front break
+                  CustomTextField.get(
+                    context: context,
+                    controller: frontBreakController,
+                    textInputType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    label: AppStrings.frontBreak,
+                    hint: AppStrings.frontBreakExample,
+                    validatorFunction: (value) {
+                      if (value!.isNotEmpty) {
+                        return null;
+                      } else {
+                        return AppStrings.emptyField;
+                      }
+                    },
+                  ),
+                  AppSize.gapH20,
 
-            // rear break
-            CustomTextField.get(
-              context: context,
-              controller: nameController,
-              textInputType: TextInputType.text,
-              textInputAction: TextInputAction.next,
-              label: AppStrings.rearBreak,
-              hint: AppStrings.rearBreakExample,
-            ),
-            AppSize.gapH20,
+                  // rear break
+                  CustomTextField.get(
+                    context: context,
+                    controller: rearBreakController,
+                    textInputType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    label: AppStrings.rearBreak,
+                    hint: AppStrings.rearBreakExample,
+                    validatorFunction: (value) {
+                      if (value!.isNotEmpty) {
+                        return null;
+                      } else {
+                        return AppStrings.emptyField;
+                      }
+                    },
+                  ),
+                  AppSize.gapH20,
 
-            // front wheel
-            CustomTextField.get(
-              context: context,
-              controller: nameController,
-              textInputType: TextInputType.text,
-              textInputAction: TextInputAction.next,
-              label: AppStrings.frontWheel,
-              hint: AppStrings.frontWheelExample,
-            ),
-            AppSize.gapH20,
+                  // front wheel
+                  CustomTextField.get(
+                    context: context,
+                    controller: frontWheelController,
+                    textInputType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    label: AppStrings.frontWheel,
+                    hint: AppStrings.frontWheelExample,
+                    validatorFunction: (value) {
+                      if (value!.isNotEmpty) {
+                        return null;
+                      } else {
+                        return AppStrings.emptyField;
+                      }
+                    },
+                  ),
+                  AppSize.gapH20,
 
-            // rear wheel
-            CustomTextField.get(
-              context: context,
-              controller: nameController,
-              textInputType: TextInputType.text,
-              textInputAction: TextInputAction.next,
-              label: AppStrings.rearWheel,
-              hint: AppStrings.rearWheelExample,
-            ),
-            AppSize.gapH20,
+                  // rear wheel
+                  CustomTextField.get(
+                    context: context,
+                    controller: rearWheelController,
+                    textInputType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    label: AppStrings.rearWheel,
+                    hint: AppStrings.rearWheelExample,
+                    validatorFunction: (value) {
+                      if (value!.isNotEmpty) {
+                        return null;
+                      } else {
+                        return AppStrings.emptyField;
+                      }
+                    },
+                  ),
+                  AppSize.gapH20,
 
-            // front tyre
-            CustomTextField.get(
-              context: context,
-              controller: nameController,
-              textInputType: TextInputType.text,
-              textInputAction: TextInputAction.next,
-              label: AppStrings.frontTyre,
-              hint: AppStrings.frontTyreExample,
-            ),
-            AppSize.gapH20,
+                  // front tyre
+                  CustomTextField.get(
+                    context: context,
+                    controller: frontTyreController,
+                    textInputType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    label: AppStrings.frontTyre,
+                    hint: AppStrings.frontTyreExample,
+                    validatorFunction: (value) {
+                      if (value!.isNotEmpty) {
+                        return null;
+                      } else {
+                        return AppStrings.emptyField;
+                      }
+                    },
+                  ),
+                  AppSize.gapH20,
 
-            // rear tyre
-            CustomTextField.get(
-              context: context,
-              controller: nameController,
-              textInputType: TextInputType.text,
-              textInputAction: TextInputAction.done,
-              label: AppStrings.rearTyre,
-              hint: AppStrings.rearTyreExample,
+                  // rear tyre
+                  CustomTextField.get(
+                    context: context,
+                    controller: rearTyreController,
+                    textInputType: TextInputType.text,
+                    textInputAction: TextInputAction.done,
+                    label: AppStrings.rearTyre,
+                    hint: AppStrings.rearTyreExample,
+                    validatorFunction: (value) {
+                      if (value!.isNotEmpty) {
+                        return null;
+                      } else {
+                        return AppStrings.emptyField;
+                      }
+                    },
+                  ),
+                  AppSize.gapH40,
+                ],
+              ),
             ),
-            AppSize.gapH40,
 
             // save button
             MaterialButton(

@@ -76,6 +76,7 @@ class AppStrings {
   static const String rearTyreExample = "100/80-17";
   static const String invalidPhone = "Invalid phone number!";
   static const String emptyField = "Empty field!";
+  static const String sameNameWillNotAcceptable = "Same name will not acceptable";
   static const String close = "Close";
   static const String add = "Add";
   static const String pleaseSelectImage = "Please select image!";
