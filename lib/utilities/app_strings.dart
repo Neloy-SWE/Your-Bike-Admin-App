@@ -10,6 +10,7 @@ class AppStrings {
   static const String allBikeList = "All Bike List";
   static const String addNewBike = "Add New Bike";
   static const String addBikeImage = "Add Bike Image";
+  static const String changeBikeImage = "Change Bike Image";
   static const String tapToSeeEditDetails = "Tap To See/Edit Details";
   static const String selectBrand = "Select Brand";
   static const String selectCC = "Select CC";

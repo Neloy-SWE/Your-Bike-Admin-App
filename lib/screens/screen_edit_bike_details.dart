@@ -1,25 +1,28 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:your_bike_admin/components/custom_dialogue.dart';
 import 'package:your_bike_admin/components/custom_text_field.dart';
+import 'package:your_bike_admin/network/model/model_bike.dart';
 import 'package:your_bike_admin/screens/screen_user_login.dart';
 import 'package:your_bike_admin/utilities/app_size.dart';
 
+import '../network/data/provider_bike_details.dart';
 import '../utilities/app_strings.dart';
 
 /// Created by Neloy on 3/20/2024
 /// Email: taufiqneloy.swe@gmail.com
 
-class EditBikeDetails extends StatefulWidget {
+class EditBikeDetails extends ConsumerStatefulWidget {
   const EditBikeDetails({super.key});
 
   @override
-  State<EditBikeDetails> createState() => _EditBikeDetailsState();
+  ConsumerState<EditBikeDetails> createState() => _EditBikeDetailsState();
 }
 
-class _EditBikeDetailsState extends State<EditBikeDetails> {
+class _EditBikeDetailsState extends ConsumerState<EditBikeDetails> {
   TextEditingController nameController = TextEditingController();
   TextEditingController brandNameController = TextEditingController();
   TextEditingController ccController = TextEditingController();
@@ -40,6 +43,39 @@ class _EditBikeDetailsState extends State<EditBikeDetails> {
   TextEditingController rearTyreController = TextEditingController();
 
   String imageData = "";
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback(
+            (_) {
+              BikeModel bike = ref.watch(bikeDetails);
+              nameController.text = bike.name ?? "";
+              brandNameController.text = bike.brandName ?? "";
+              ccController.text = bike.cc.toString();
+              gearsController.text = bike.gears.toString();
+              maxPowerController.text = bike.maxPower ?? "";
+              maxTorqueController.text = bike.maxTorque ?? "";
+              mileageController.text = bike.mileage ?? "";
+              fuelTankCapacityController.text = bike.fuelTankCapacity.toString();
+              engineOilCapacityController.text = bike.engineOilCapacity.toString();
+              seatHeightController.text = bike.seatHeight.toString();
+              frontSuspensionController.text = bike.frontSuspension ?? "";
+              rearSuspensionController.text = bike.rearSuspension ?? "";
+              frontBreakController.text = bike.frontBreak ?? "";
+              rearBreakController.text = bike.rearBreak ?? "";
+              frontWheelController.text = bike.frontWheel ?? "";
+              rearWheelController.text = bike.rearWheel ?? "";
+              frontTyreController.text = bike.frontTyre ?? "";
+              rearTyreController.text = bike.rearTyre ?? "";
+
+              setState(() {
+                imageData = bike.image ?? "";
+              });
+
+        },
+    );
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -138,7 +174,7 @@ class _EditBikeDetailsState extends State<EditBikeDetails> {
                 color: Colors.black,
               ),
               label: Text(
-                AppStrings.addBikeImage,
+                AppStrings.changeBikeImage,
                 style: Theme.of(context).textTheme.displayMedium,
               ),
             ),
