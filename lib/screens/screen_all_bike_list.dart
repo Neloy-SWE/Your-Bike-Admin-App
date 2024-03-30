@@ -33,6 +33,7 @@ class _HomePageState extends ConsumerState<AllBikeList>
   String brandValue = "";
   String ccValue = "";
 
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback(
@@ -250,7 +251,7 @@ class _HomePageState extends ConsumerState<AllBikeList>
 
   Future<void> _getAllBikes() async {
     CustomDialogue.loading(context: context);
-    await GetAllBikesHelper().connection(manager: this);
+    await GetAllBikesHelper().connection(manager: this,);
   }
 
   @override

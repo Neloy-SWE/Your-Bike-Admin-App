@@ -161,6 +161,10 @@ class _LoginState extends State<Login> implements LoginManager {
   }
 
   Future<void> login({required BuildContext context}) async {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
     CustomDialogue.loading(context: context);
     await LoginHelper().connection(
       phone: phoneController.text.trim(),

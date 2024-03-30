@@ -534,6 +534,10 @@ class _AddBikeState extends ConsumerState<AddBike>
   }
 
   Future<void> _addBike() async {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
     CustomDialogue.loading(context: context);
 
     AddBikeModel bike = AddBikeModel(

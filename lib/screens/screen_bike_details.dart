@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:your_bike_admin/network/model/model_bike.dart';
+import 'package:your_bike_admin/screens/screen_all_bike_list.dart';
 import 'package:your_bike_admin/screens/screen_edit_bike_details.dart';
 import 'package:your_bike_admin/screens/screen_user_login.dart';
 import 'package:your_bike_admin/utilities/app_size.dart';
@@ -12,7 +13,6 @@ import '../components/custom_dialogue.dart';
 import '../network/data/provider_bike_details.dart';
 import '../network/helper/helper_bike_details.dart';
 import '../network/manager/manager_bike_details.dart';
-import '../utilities/app_image_path.dart';
 import '../utilities/app_strings.dart';
 
 /// Created by Neloy on 3/19/2024
@@ -31,14 +31,14 @@ class _BikeDetailsState extends ConsumerState<BikeDetails>
     implements BikeDetailsManager {
   BikeModel? bike;
 
+  ScrollController controller = ScrollController();
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
         if (ref.watch(bikeDetails).name == null) {
           _getBikeDetails();
-        } else {
-          bike = ref.watch(bikeDetails);
         }
       },
     );
@@ -48,6 +48,7 @@ class _BikeDetailsState extends ConsumerState<BikeDetails>
 
   @override
   Widget build(BuildContext context) {
+    bike = ref.watch(bikeDetails);
     return WillPopScope(
       onWillPop: () async {
         return await CustomDialogue.decision(
@@ -69,7 +70,13 @@ class _BikeDetailsState extends ConsumerState<BikeDetails>
           title: const Text(AppStrings.bikeDetails),
           leading: IconButton(
             onPressed: () {
-              Navigator.of(context).pop();
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (builder) => const AllBikeList(),
+                ),
+                    (Route<dynamic> route) => false,
+              );
+              ref.read(bikeDetails.notifier).state = BikeModel();
             },
             icon: const Icon(Icons.chevron_left),
           ),
@@ -79,6 +86,7 @@ class _BikeDetailsState extends ConsumerState<BikeDetails>
             : ListView(
                 physics: const BouncingScrollPhysics(),
                 padding: const EdgeInsets.all(25),
+                controller: controller,
                 children: [
                   // bike image
                   Image.memory(
@@ -213,8 +221,15 @@ class _BikeDetailsState extends ConsumerState<BikeDetails>
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (builder) => const EditBikeDetails(),
+                          builder: (builder) => EditBikeDetails(
+                            id: widget.id,
+                          ),
                         ),
+                      );
+                      controller.animateTo(
+                        0.0,
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.easeInOut,
                       );
                     },
                     color: Colors.black,
@@ -308,8 +323,7 @@ class _BikeDetailsState extends ConsumerState<BikeDetails>
 
   @override
   void success({required BikeModel bike, required String message}) {
-    ref.watch(bikeDetails.notifier).state = bike;
-    this.bike = bike;
+    ref.read(bikeDetails.notifier).state = bike;
     Navigator.of(context).pop();
     Timer(
       const Duration(seconds: 1),

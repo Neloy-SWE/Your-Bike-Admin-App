@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -5,24 +6,30 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:your_bike_admin/components/custom_dialogue.dart';
 import 'package:your_bike_admin/components/custom_text_field.dart';
+import 'package:your_bike_admin/network/data/provider_get_all_bike.dart';
+import 'package:your_bike_admin/network/helper/helper_edit_bike_details.dart';
 import 'package:your_bike_admin/network/model/model_bike.dart';
 import 'package:your_bike_admin/screens/screen_user_login.dart';
 import 'package:your_bike_admin/utilities/app_size.dart';
 
 import '../network/data/provider_bike_details.dart';
+import '../network/manager/manager_bike_details.dart';
 import '../utilities/app_strings.dart';
 
 /// Created by Neloy on 3/20/2024
 /// Email: taufiqneloy.swe@gmail.com
 
 class EditBikeDetails extends ConsumerStatefulWidget {
-  const EditBikeDetails({super.key});
+  final int id;
+
+  const EditBikeDetails({super.key, required this.id});
 
   @override
   ConsumerState<EditBikeDetails> createState() => _EditBikeDetailsState();
 }
 
-class _EditBikeDetailsState extends ConsumerState<EditBikeDetails> {
+class _EditBikeDetailsState extends ConsumerState<EditBikeDetails>
+    implements BikeDetailsManager {
   TextEditingController nameController = TextEditingController();
   TextEditingController brandNameController = TextEditingController();
   TextEditingController ccController = TextEditingController();
@@ -527,20 +534,9 @@ class _EditBikeDetailsState extends ConsumerState<EditBikeDetails> {
                 ),
               ),
               onPressed: () {
-                // CustomDialogue.simple(context: context, icon: Icons.verified_outlined, message: AppStrings.update, buttonText: AppStrings.done);
-                // CustomDialogue.simple(context: context, icon: Icons.error_outline_outlined, message: AppStrings.checkYourInternet, buttonText: AppStrings.goBack);
-                // CustomDialogue.functional(
-                //   context: context,
-                //   onPressed: () {},
-                //   icon: Icons.logout,
-                //   message: AppStrings.doYouWantToExitApp,
-                // );
-                // CustomDialogue.functional(
-                //   context: context,
-                //   onPressed: () {},
-                //   icon: Icons.delete,
-                //   message: AppStrings.doYouWantToDelete,
-                // );
+                if (_editBikeKey.currentState!.validate()) {
+                  _editBike();
+                }
               },
               color: Colors.black,
               child: Text(
@@ -577,6 +573,42 @@ class _EditBikeDetailsState extends ConsumerState<EditBikeDetails> {
     );
   }
 
+  Future<void> _editBike() async {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
+    CustomDialogue.loading(context: context);
+    BikeModel bike = BikeModel(
+      id: widget.id,
+      name: nameController.text,
+      image: imageData,
+      brandName: brandNameController.text,
+      cc: double.parse(ccController.text),
+      gears: int.parse(gearsController.text),
+      maxPower: maxPowerController.text,
+      maxTorque: maxTorqueController.text,
+      mileage: mileageController.text,
+      fuelTankCapacity: double.parse(fuelTankCapacityController.text),
+      engineOilCapacity: double.parse(engineOilCapacityController.text),
+      seatHeight: double.parse(seatHeightController.text),
+      frontSuspension: frontSuspensionController.text,
+      rearSuspension: rearSuspensionController.text,
+      frontBreak: frontBreakController.text,
+      rearBreak: rearBreakController.text,
+      frontWheel: frontWheelController.text,
+      rearWheel: rearWheelController.text,
+      frontTyre: frontTyreController.text,
+      rearTyre: rearTyreController.text,
+      createdDate: DateTime.now(),
+    );
+
+    await EditBikeHelper().connection(
+      bike: bike,
+      manager: this,
+    );
+  }
+
   Future _pickImage() async {
     final selectImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -584,5 +616,46 @@ class _EditBikeDetailsState extends ConsumerState<EditBikeDetails> {
     setState(() {
       imageData = base64Encode(bytes);
     });
+  }
+
+  @override
+  void fail({required String message}) {
+    Navigator.of(context).pop();
+    Timer(
+      const Duration(seconds: 1),
+          () {
+        CustomDialogue.simple(
+          context: context,
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Icons.error_outline_outlined,
+          message: message,
+          buttonText: AppStrings.close,
+        );
+      },
+    );
+  }
+
+  @override
+  void success({required BikeModel bike, required String message}) {
+    ref.read(bikeDetails.notifier).state = bike;
+    ref.read(allBikeList.notifier).state[ref.watch(allBikeList).indexWhere((element) => element.id == bike.id)] = bike;
+    Navigator.of(context).pop();
+    Timer(
+      const Duration(seconds: 1),
+          () {
+        CustomDialogue.simple(
+          context: context,
+          onPressed: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+          },
+          icon: Icons.verified_outlined,
+          message: message,
+          buttonText: AppStrings.close,
+        );
+      },
+    );
   }
 }
