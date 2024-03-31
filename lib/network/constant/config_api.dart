@@ -9,5 +9,5 @@ class APIConfig {
   static const String addBike = "${prefix}AddBike";
   static const String getSingleBike = "${prefix}GetSingleBike";
   static const String updateBike = "${prefix}UpdateBike";
-  static const String deleteBike1014 = "${prefix}DeleteBike1014";
+  static const String deleteBike = "${prefix}DeleteBike";
 }

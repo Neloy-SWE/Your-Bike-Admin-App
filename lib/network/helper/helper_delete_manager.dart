@@ -13,20 +13,26 @@ class DeleteBikeHelper implements DeleteBikeManager {
     required int id,
     required DeleteBikeManager manager,
   }) async {
-    String result = await DeleteBikeAPI().run(id: id.toString());
+    try {
+      String result = await DeleteBikeAPI().run(id: id.toString());
 
-    if (result != ValueConfigs.error) {
-      BaseModel baseModel = BaseModel.fromJson(result);
-      if (baseModel.status == ValueConfigs.success) {
-        manager.success(
-          message: baseModel.message!,
-        );
+      if (result != ValueConfigs.error) {
+        BaseModel<String> baseModel = BaseModel.fromJson(result);
+        if (baseModel.status == ValueConfigs.success) {
+          manager.deleteSuccess(
+            message: baseModel.message!,
+          );
+        } else {
+          manager.fail(
+            message: baseModel.message!,
+          );
+        }
       } else {
         manager.fail(
-          message: baseModel.message!,
+          message: AppStrings.checkYourInternet,
         );
       }
-    } else {
+    } on Exception catch (e) {
       manager.fail(
         message: AppStrings.checkYourInternet,
       );
@@ -37,5 +43,5 @@ class DeleteBikeHelper implements DeleteBikeManager {
   void fail({required String message}) {}
 
   @override
-  void success({required String message}) {}
+  void deleteSuccess({required String message}) {}
 }

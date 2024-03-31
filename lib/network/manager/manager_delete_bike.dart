@@ -2,7 +2,7 @@
 /// Email: taufiqneloy.swe@gmail.com
 
 abstract class DeleteBikeManager {
-  void success({required String message});
+  void deleteSuccess({required String message});
 
   void fail({required String message});
 }

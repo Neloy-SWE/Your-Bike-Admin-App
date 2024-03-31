@@ -15,7 +15,7 @@ class DeleteBikeAPI{
       var request = http.Request(
         ValueConfigs.requestDelete,
         Uri.parse(
-          APIConfig.baseUrl + APIConfig.deleteBike1014 + id,
+          APIConfig.baseUrl + APIConfig.deleteBike + id,
         ),
       );
 
@@ -28,7 +28,7 @@ class DeleteBikeAPI{
       http.StreamedResponse response = await request.send();
 
       return await response.stream.bytesToString();
-    } catch (e) {
+    } on Exception {
       return ValueConfigs.error;
     }
   }

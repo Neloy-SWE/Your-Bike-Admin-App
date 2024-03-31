@@ -3,6 +3,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:your_bike_admin/network/data/provider_get_all_bike.dart';
+import 'package:your_bike_admin/network/helper/helper_delete_manager.dart';
 import 'package:your_bike_admin/network/model/model_bike.dart';
 import 'package:your_bike_admin/screens/screen_all_bike_list.dart';
 import 'package:your_bike_admin/screens/screen_edit_bike_details.dart';
@@ -13,6 +15,7 @@ import '../components/custom_dialogue.dart';
 import '../network/data/provider_bike_details.dart';
 import '../network/helper/helper_bike_details.dart';
 import '../network/manager/manager_bike_details.dart';
+import '../network/manager/manager_delete_bike.dart';
 import '../utilities/app_strings.dart';
 
 /// Created by Neloy on 3/19/2024
@@ -28,7 +31,7 @@ class BikeDetails extends ConsumerStatefulWidget {
 }
 
 class _BikeDetailsState extends ConsumerState<BikeDetails>
-    implements BikeDetailsManager {
+    implements BikeDetailsManager, DeleteBikeManager {
   BikeModel? bike;
 
   ScrollController controller = ScrollController();
@@ -74,7 +77,7 @@ class _BikeDetailsState extends ConsumerState<BikeDetails>
                 MaterialPageRoute(
                   builder: (builder) => const AllBikeList(),
                 ),
-                    (Route<dynamic> route) => false,
+                (Route<dynamic> route) => false,
               );
               ref.read(bikeDetails.notifier).state = BikeModel();
             },
@@ -249,7 +252,16 @@ class _BikeDetailsState extends ConsumerState<BikeDetails>
                         10,
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      CustomDialogue.decision(
+                        context: context,
+                        onPressed: () {
+                          _deleteBike();
+                        },
+                        icon: Icons.delete_forever_sharp,
+                        message: AppStrings.doYouWantToDelete,
+                      );
+                    },
                     color: Colors.red,
                     child: Text(
                       AppStrings.delete,
@@ -302,6 +314,15 @@ class _BikeDetailsState extends ConsumerState<BikeDetails>
     );
   }
 
+  Future<void> _deleteBike() async {
+    Navigator.of(context).pop();
+    CustomDialogue.loading(context: context);
+    await DeleteBikeHelper().connection(
+      id: widget.id,
+      manager: this,
+    );
+  }
+
   @override
   void fail({required String message}) {
     Navigator.of(context).pop();
@@ -332,6 +353,35 @@ class _BikeDetailsState extends ConsumerState<BikeDetails>
           context: context,
           onPressed: () {
             Navigator.of(context).pop();
+          },
+          icon: Icons.verified_outlined,
+          message: message,
+          buttonText: AppStrings.close,
+        );
+      },
+    );
+  }
+
+  @override
+  void deleteSuccess({required String message}) {
+    ref
+        .read(allBikeList.notifier)
+        .state
+        .removeWhere((element) => element.id == widget.id);
+
+    Navigator.of(context).pop();
+    Timer(
+      const Duration(seconds: 1),
+          () {
+        CustomDialogue.simple(
+          context: context,
+          onPressed: () {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (builder) => const AllBikeList(),
+              ),
+                  (Route<dynamic> route) => false,
+            );
           },
           icon: Icons.verified_outlined,
           message: message,

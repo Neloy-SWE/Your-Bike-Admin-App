@@ -50,9 +50,9 @@ class AppStrings {
   static const String goBack = "Go Back";
   static const String yes = "YES";
   static const String no = "NO";
-  static const String doYouWantToExitApp = "Do you want to exit the app ?";
-  static const String doYouWantToLogout = "Do you want to logout ?";
-  static const String doYouWantToDelete = "Do you want to delete ?";
+  static const String doYouWantToExitApp = "Do you want to exit the app?";
+  static const String doYouWantToLogout = "Do you want to logout?";
+  static const String doYouWantToDelete = "Do you want to delete?";
   static const String login = "Login";
   static const String copyright = "copyright©neloy 2024";
   static const String bikeNameExample = "R15M 2024 Edition";
