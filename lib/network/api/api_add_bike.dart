@@ -32,7 +32,7 @@ class AddBikeAPI {
       http.StreamedResponse response = await request.send();
 
       return await response.stream.bytesToString();
-    } catch (e) {
+    } on Exception {
       return ValueConfigs.error;
     }
   }
