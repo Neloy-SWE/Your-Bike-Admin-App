@@ -2,11 +2,12 @@
 /// Email: taufiqneloy.swe@gmail.com
 
 class APIConfig {
-  static const String baseUrl = "https://goodpurpledart36.conveyor.cloud/";
+  static const String baseUrl = "https://widemintboat2.conveyor.cloud/";
   static const String prefix = "apiAdmin/youBike/";
   static const String login = "${prefix}Login";
   static const String getAllBikes = "${prefix}GetAllBikes";
   static const String addBike = "${prefix}AddBike";
   static const String getSingleBike = "${prefix}GetSingleBike";
   static const String updateBike = "${prefix}UpdateBike";
+  static const String deleteBike1014 = "${prefix}DeleteBike1014";
 }

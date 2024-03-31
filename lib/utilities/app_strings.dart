@@ -43,7 +43,7 @@ class AppStrings {
   static const String editBikeDetails = "Edit Bike Details";
   static const String cancel = "Cancel";
   static const String save = "Save";
-  static const String update = "Details update successfully !";
+  static const String update = "Update";
   static const String done = "Done";
   static const String wait = "Please wait for a while";
   static const String checkYourInternet = "Check your internet";

@@ -540,7 +540,7 @@ class _EditBikeDetailsState extends ConsumerState<EditBikeDetails>
               },
               color: Colors.black,
               child: Text(
-                AppStrings.save,
+                AppStrings.update,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
@@ -559,7 +559,9 @@ class _EditBikeDetailsState extends ConsumerState<EditBikeDetails>
                   width: 1,
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
               color: Colors.white,
               child: Text(
                 AppStrings.cancel,
@@ -623,7 +625,7 @@ class _EditBikeDetailsState extends ConsumerState<EditBikeDetails>
     Navigator.of(context).pop();
     Timer(
       const Duration(seconds: 1),
-          () {
+      () {
         CustomDialogue.simple(
           context: context,
           onPressed: () {
@@ -640,11 +642,13 @@ class _EditBikeDetailsState extends ConsumerState<EditBikeDetails>
   @override
   void success({required BikeModel bike, required String message}) {
     ref.read(bikeDetails.notifier).state = bike;
-    ref.read(allBikeList.notifier).state[ref.watch(allBikeList).indexWhere((element) => element.id == bike.id)] = bike;
+    ref.read(allBikeList.notifier).state[ref
+        .watch(allBikeList)
+        .indexWhere((element) => element.id == bike.id)] = bike;
     Navigator.of(context).pop();
     Timer(
       const Duration(seconds: 1),
-          () {
+      () {
         CustomDialogue.simple(
           context: context,
           onPressed: () {
