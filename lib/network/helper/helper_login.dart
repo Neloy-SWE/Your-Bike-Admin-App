@@ -15,24 +15,30 @@ class LoginHelper implements LoginManager {
     required String password,
     required LoginManager manager,
   }) async {
-    String result = await LoginAPI().run(
-      phone: phone,
-      password: password,
-    );
-    if (result != ValueConfigs.error) {
-      BaseModel<String> baseModel = BaseModel.fromJson(result);
-      if (baseModel.status == ValueConfigs.success) {
-        var box = await Hive.openBox(ValueConfigs.token);
-        await box.put(ValueConfigs.token, baseModel.data);
-        manager.success(
-          message: baseModel.message!,
-        );
+    try {
+      String result = await LoginAPI().run(
+        phone: phone,
+        password: password,
+      );
+      if (result != ValueConfigs.error) {
+        BaseModel<String> baseModel = BaseModel.fromJson(result);
+        if (baseModel.status == ValueConfigs.success) {
+          var box = await Hive.openBox(ValueConfigs.token);
+          await box.put(ValueConfigs.token, baseModel.data);
+          manager.success(
+            message: baseModel.message!,
+          );
+        } else {
+          manager.fail(
+            message: baseModel.message!,
+          );
+        }
       } else {
         manager.fail(
-          message: baseModel.message!,
+          message: AppStrings.checkYourInternet,
         );
       }
-    } else {
+    } on Exception catch (e) {
       manager.fail(
         message: AppStrings.checkYourInternet,
       );

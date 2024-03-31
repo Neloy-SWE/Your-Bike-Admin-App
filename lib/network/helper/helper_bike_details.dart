@@ -14,19 +14,25 @@ class BikeDetailsHelper implements BikeDetailsManager {
     required int id,
     required BikeDetailsManager manager,
   }) async {
-    String result = await BikeDetailsAPI().run(id: id.toString());
+    try {
+      String result = await BikeDetailsAPI().run(id: id.toString());
 
-    if (result != ValueConfigs.error) {
-      BaseModel baseModel = BaseModel.fromJson(result);
-      if (baseModel.status == ValueConfigs.success) {
-        BikeModel bike = BikeModel.fromMap(baseModel.data);
-        manager.success(bike: bike, message: baseModel.message!);
+      if (result != ValueConfigs.error) {
+        BaseModel baseModel = BaseModel.fromJson(result);
+        if (baseModel.status == ValueConfigs.success) {
+          BikeModel bike = BikeModel.fromMap(baseModel.data);
+          manager.success(bike: bike, message: baseModel.message!);
+        } else {
+          manager.fail(
+            message: baseModel.message!,
+          );
+        }
       } else {
         manager.fail(
-          message: baseModel.message!,
+          message: AppStrings.checkYourInternet,
         );
       }
-    } else {
+    } on Exception catch (e) {
       manager.fail(
         message: AppStrings.checkYourInternet,
       );

@@ -13,20 +13,27 @@ class GetAllBikesHelper implements GetAllBikesManager {
   Future<void> connection({
     required GetAllBikesManager manager,
   }) async {
-    String result = await GetAllBikesAPI().run();
+    try {
+      String result = await GetAllBikesAPI().run();
 
-    if (result != ValueConfigs.error) {
-      BaseModel baseModel = BaseModel.fromJson(result);
-      if (baseModel.status == ValueConfigs.success) {
-        List<BikeModel> bikes =
-        baseModel.data.map<BikeModel>((e) => BikeModel.fromMap(e)).toList();
-        manager.success(bikes: bikes, message: baseModel.message!);
+      if (result != ValueConfigs.error) {
+        BaseModel baseModel = BaseModel.fromJson(result);
+        if (baseModel.status == ValueConfigs.success) {
+          List<BikeModel> bikes = baseModel.data
+              .map<BikeModel>((e) => BikeModel.fromMap(e))
+              .toList();
+          manager.success(bikes: bikes, message: baseModel.message!);
+        } else {
+          manager.fail(
+            message: baseModel.message!,
+          );
+        }
       } else {
         manager.fail(
-          message: baseModel.message!,
+          message: AppStrings.checkYourInternet,
         );
       }
-    } else {
+    } on Exception catch (e) {
       manager.fail(
         message: AppStrings.checkYourInternet,
       );

@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:your_bike_admin/network/data/provider_get_all_bike.dart';
-import 'package:your_bike_admin/network/helper/helper_delete_manager.dart';
+import 'package:your_bike_admin/network/helper/helper_delete_bike.dart';
 import 'package:your_bike_admin/network/model/model_bike.dart';
 import 'package:your_bike_admin/screens/screen_all_bike_list.dart';
 import 'package:your_bike_admin/screens/screen_edit_bike_details.dart';

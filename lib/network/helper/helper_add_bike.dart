@@ -15,20 +15,27 @@ class AddBikeHelper implements GetAllBikesManager {
     required GetAllBikesManager manager,
     required AddBikeModel bike,
   }) async {
-    String result = await AddBikeAPI().run(bike: bike);
+    try {
+      String result = await AddBikeAPI().run(bike: bike);
 
-    if (result != ValueConfigs.error) {
-      BaseModel baseModel = BaseModel.fromJson(result);
-      if (baseModel.status == ValueConfigs.success) {
-        List<BikeModel> bikes =
-            baseModel.data.map<BikeModel>((e) => BikeModel.fromMap(e)).toList();
-        manager.success(bikes: bikes, message: baseModel.message!);
+      if (result != ValueConfigs.error) {
+        BaseModel baseModel = BaseModel.fromJson(result);
+        if (baseModel.status == ValueConfigs.success) {
+          List<BikeModel> bikes = baseModel.data
+              .map<BikeModel>((e) => BikeModel.fromMap(e))
+              .toList();
+          manager.success(bikes: bikes, message: baseModel.message!);
+        } else {
+          manager.fail(
+            message: baseModel.message!,
+          );
+        }
       } else {
         manager.fail(
-          message: baseModel.message!,
+          message: AppStrings.checkYourInternet,
         );
       }
-    } else {
+    } on Exception catch (e) {
       manager.fail(
         message: AppStrings.checkYourInternet,
       );
