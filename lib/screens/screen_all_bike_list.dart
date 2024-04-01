@@ -31,12 +31,20 @@ class _HomePageState extends ConsumerState<AllBikeList>
     implements GetAllBikesManager {
   TextEditingController searchController = TextEditingController();
 
+  List<BikeModel> bikeList = [];
+  List<BikeModel> finalBikeList = [];
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
         if (ref.watch(allBikeList).isEmpty) {
           _getAllBikes();
+        } else {
+          setState(() {
+            bikeList = ref.watch(allBikeList);
+            finalBikeList = ref.watch(allBikeList);
+          });
         }
       },
     );
@@ -101,27 +109,35 @@ class _HomePageState extends ConsumerState<AllBikeList>
                 children: [
                   // search field
                   CustomTextField.get(
-                    context: context,
-                    controller: searchController,
-                    textInputType: TextInputType.text,
-                    textInputAction: TextInputAction.done,
-                    hint: AppStrings.bikeNameExample,
-                    label: AppStrings.bikeName,
-                    prefixWidget: const Icon(
-                      Icons.search,
-                      color: Colors.black,
-                    ),
-                  ),
+                      context: context,
+                      controller: searchController,
+                      textInputType: TextInputType.text,
+                      textInputAction: TextInputAction.done,
+                      hint: AppStrings.bikeNameExample,
+                      label: AppStrings.bikeName,
+                      prefixWidget: const Icon(
+                        Icons.search,
+                        color: Colors.black,
+                      ),
+                      onChanged: (value) {
+                        final tempBikeList = bikeList.where((element) {
+                          final bikeTextLowerCase = element.name!.toLowerCase();
+                          final search = value.toLowerCase();
+                          return bikeTextLowerCase.contains(search);
+                        }).toList();
+                        setState(() {
+                          finalBikeList = tempBikeList;
+                        });
+                      }),
                   AppSize.gapH40,
 
                   // bike list
                   ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: ref.watch(allBikeList).length,
+                      itemCount: finalBikeList.length,
                       itemBuilder: (context, index) {
-                        return _elementBike(
-                            bike: ref.watch(allBikeList)[index]);
+                        return _elementBike(bike: finalBikeList[index]);
                       }),
                   AppSize.gapH60,
                 ],
@@ -237,6 +253,8 @@ class _HomePageState extends ConsumerState<AllBikeList>
   @override
   void success({required List<BikeModel> bikes, required String message}) {
     ref.read(allBikeList.notifier).state = bikes;
+    bikeList = bikes;
+    finalBikeList = bikes;
     Navigator.of(context).pop();
     Timer(
       const Duration(seconds: 1),
