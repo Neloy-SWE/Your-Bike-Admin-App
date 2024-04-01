@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:your_bike_admin/components/custom_dialogue.dart';
+import 'package:your_bike_admin/components/custom_text_field.dart';
 import 'package:your_bike_admin/network/helper/helper_get_all_bikes.dart';
 import 'package:your_bike_admin/network/manager/manager_get_all_bikes.dart';
 import 'package:your_bike_admin/network/model/model_bike.dart';
@@ -28,11 +29,7 @@ class AllBikeList extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<AllBikeList>
     implements GetAllBikesManager {
-  List<String> brandList = [];
-  List<String> ccList = [];
-  String brandValue = "";
-  String ccValue = "";
-
+  TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
@@ -45,6 +42,12 @@ class _HomePageState extends ConsumerState<AllBikeList>
     );
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -96,62 +99,18 @@ class _HomePageState extends ConsumerState<AllBikeList>
                 physics: const BouncingScrollPhysics(),
                 padding: const EdgeInsets.all(25),
                 children: [
-                  // brand list
-                  DropdownMenu<String>(
-                    hintText: AppStrings.selectBrand,
-                    width: MediaQuery.of(context).size.width - 50,
-                    enableFilter: true,
-                    menuHeight: 200,
-                    onSelected: (String? value) {
-                      FocusManager.instance.primaryFocus?.unfocus();
-                      // This is called when the user selects an item.
-                      setState(() {
-                        brandValue = value!;
-                      });
-                    },
-                    dropdownMenuEntries:
-                        brandList.map<DropdownMenuEntry<String>>(
-                      (String value) {
-                        return DropdownMenuEntry<String>(
-                          value: value,
-                          label: value,
-                          style: ButtonStyle(
-                            textStyle: MaterialStateProperty.all(
-                              Theme.of(context).textTheme.displayMedium,
-                            ),
-                          ),
-                        );
-                      },
-                    ).toList(),
-                  ),
-                  AppSize.gapH20,
-
-                  // cc list
-                  DropdownMenu<String>(
-                    hintText: AppStrings.selectCC,
-                    width: MediaQuery.of(context).size.width - 50,
-                    enableFilter: true,
-                    menuHeight: 200,
-                    onSelected: (String? value) {
-                      FocusManager.instance.primaryFocus?.unfocus();
-                      // This is called when the user selects an item.
-                      setState(() {
-                        ccValue = value!;
-                      });
-                    },
-                    dropdownMenuEntries: ccList.map<DropdownMenuEntry<String>>(
-                      (String value) {
-                        return DropdownMenuEntry<String>(
-                          value: value,
-                          label: value,
-                          style: ButtonStyle(
-                            textStyle: MaterialStateProperty.all(
-                              Theme.of(context).textTheme.displayMedium,
-                            ),
-                          ),
-                        );
-                      },
-                    ).toList(),
+                  // search field
+                  CustomTextField.get(
+                    context: context,
+                    controller: searchController,
+                    textInputType: TextInputType.text,
+                    textInputAction: TextInputAction.done,
+                    hint: AppStrings.bikeNameExample,
+                    label: AppStrings.bikeName,
+                    prefixWidget: const Icon(
+                      Icons.search,
+                      color: Colors.black,
+                    ),
                   ),
                   AppSize.gapH40,
 
@@ -251,7 +210,9 @@ class _HomePageState extends ConsumerState<AllBikeList>
 
   Future<void> _getAllBikes() async {
     CustomDialogue.loading(context: context);
-    await GetAllBikesHelper().connection(manager: this,);
+    await GetAllBikesHelper().connection(
+      manager: this,
+    );
   }
 
   @override
@@ -276,10 +237,6 @@ class _HomePageState extends ConsumerState<AllBikeList>
   @override
   void success({required List<BikeModel> bikes, required String message}) {
     ref.read(allBikeList.notifier).state = bikes;
-    for (int i = 0; i < bikes.length; i++) {
-      brandList.add(bikes[i].brandName!);
-      ccList.add(bikes[i].cc!.toString());
-    }
     Navigator.of(context).pop();
     Timer(
       const Duration(seconds: 1),

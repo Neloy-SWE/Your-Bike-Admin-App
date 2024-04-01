@@ -56,6 +56,7 @@ class AppStrings {
   static const String login = "Login";
   static const String copyright = "copyright©neloy 2024";
   static const String bikeNameExample = "R15M 2024 Edition";
+  static const String bikeName = "Bike Name";
   static const String brandNameExample = "Yamaha";
   static const String ccExample = "155";
   static const String gearCountExample = "6";
