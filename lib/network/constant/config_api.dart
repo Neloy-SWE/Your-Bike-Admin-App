@@ -2,7 +2,7 @@
 /// Email: taufiqneloy.swe@gmail.com
 
 class APIConfig {
-  static const String baseUrl = "https://largegreycard67.conveyor.cloud/";
+  static const String baseUrl = "https://s54w5l6n-7264.asse.devtunnels.ms/";
   static const String prefix = "apiAdmin/youBike/";
   static const String login = "${prefix}Login";
   static const String getAllBikes = "${prefix}GetAllBikes";

@@ -77,6 +77,7 @@ class AppStrings {
   static const String rearTyreExample = "100/80-17";
   static const String invalidPhone = "Invalid phone number!";
   static const String emptyField = "Empty field!";
+  static const String passwordMustBeGreaterThanSixCharacter = "Password must be greater than 6 character!";
   static const String sameNameWillNotAcceptable = "Same name will not acceptable";
   static const String close = "Close";
   static const String add = "Add";

@@ -103,6 +103,8 @@ class _LoginState extends State<Login> implements LoginManager {
                     validatorFunction: (value) {
                       if (value!.isEmpty) {
                         return AppStrings.emptyField;
+                      } else if (value.length < 6) {
+                        return AppStrings.passwordMustBeGreaterThanSixCharacter;
                       } else {
                         return null;
                       }
