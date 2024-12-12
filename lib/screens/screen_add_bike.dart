@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:your_bike_admin/network/helper/helper_add_bike.dart';
 import 'package:your_bike_admin/network/model/model_add_bike.dart';
 import 'package:your_bike_admin/network/model/model_bike.dart';
+import 'package:your_bike_admin/screens/screen_all_bike_list.dart';
 import 'package:your_bike_admin/screens/screen_user_login.dart';
 
 import '../components/custom_dialogue.dart';
@@ -597,8 +598,12 @@ class _AddBikeState extends ConsumerState<AddBike>
         CustomDialogue.simple(
           context: context,
           onPressed: () {
-            Navigator.of(context).pop();
-            Navigator.of(context).pop();
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (builder) => const AllBikeList(),
+              ),
+                  (Route<dynamic> route) => false,
+            );
           },
           icon: Icons.verified_outlined,
           message: message,

@@ -259,15 +259,17 @@ class _HomePageState extends ConsumerState<AllBikeList>
     Timer(
       const Duration(seconds: 1),
       () {
-        CustomDialogue.simple(
-          context: context,
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          icon: Icons.verified_outlined,
-          message: message,
-          buttonText: AppStrings.close,
-        );
+        if (bikes.isNotEmpty) {
+          CustomDialogue.simple(
+            context: context,
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Icons.verified_outlined,
+            message: message,
+            buttonText: AppStrings.close,
+          );
+        }
       },
     );
   }
