@@ -10,6 +10,7 @@ import 'package:your_bike_admin/network/manager/manager_get_all_bikes.dart';
 import 'package:your_bike_admin/network/model/model_bike.dart';
 import 'package:your_bike_admin/screens/screen_add_bike.dart';
 import 'package:your_bike_admin/screens/screen_bike_details.dart';
+import 'package:your_bike_admin/screens/screen_notification.dart';
 import 'package:your_bike_admin/screens/screen_user_login.dart';
 import 'package:your_bike_admin/utilities/app_image_path.dart';
 import 'package:your_bike_admin/utilities/app_size.dart';
@@ -60,8 +61,8 @@ class _HomePageState extends ConsumerState<AllBikeList>
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      onPopInvoked: (isPop) async {
         return await CustomDialogue.decision(
           context: context,
           onPressed: () {
@@ -79,6 +80,20 @@ class _HomePageState extends ConsumerState<AllBikeList>
       child: Scaffold(
         appBar: AppBar(
           title: const Text(AppStrings.allBikeList),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (builder) => const Notifications(),
+                  ),
+                );
+              },
+              icon: const Icon(
+                Icons.notification_important,
+              ),
+            ),
+          ],
         ),
         floatingActionButton: MaterialButton(
           elevation: 0,

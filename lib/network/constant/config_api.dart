@@ -10,4 +10,5 @@ class APIConfig {
   static const String getSingleBike = "${prefix}GetSingleBike";
   static const String updateBike = "${prefix}UpdateBike";
   static const String deleteBike = "${prefix}DeleteBike";
+  static const String getAllNotifications = "${prefix}GetAllNotifications";
 }

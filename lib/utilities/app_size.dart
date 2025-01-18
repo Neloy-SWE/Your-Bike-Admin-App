@@ -12,5 +12,6 @@ class AppSize {
   static const SizedBox gapH80 = SizedBox(height: 80);
 
   // width
+  static const SizedBox gapW10 = SizedBox(width: 10);
   static const SizedBox gapW20 = SizedBox(width: 20);
 }

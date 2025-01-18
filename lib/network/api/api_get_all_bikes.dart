@@ -20,7 +20,7 @@ class GetAllBikesAPI {
 
       var headers = {
         ValueConfigs.authorization:
-        ValueConfigs.bearer + await box.get(ValueConfigs.token),
+            ValueConfigs.bearer + await box.get(ValueConfigs.token),
         ValueConfigs.accept: ValueConfigs.applicationJson,
       };
 
