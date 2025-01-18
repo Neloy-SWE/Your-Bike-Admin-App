@@ -8,7 +8,7 @@ import '../constant/config_values.dart';
 * Email: taufiqneloy.swe@gmail.com
 */
 
-class GetAllNotificationAPI {
+class GetAllNotificationsAPI {
   Future<String> run() async {
     try {
       var box = await Hive.openBox(ValueConfigs.token);

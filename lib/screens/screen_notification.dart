@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:your_bike_admin/network/helper/helper_get_all_notifications.dart';
+import 'package:your_bike_admin/network/helper/helper_read_notification.dart';
 import 'package:your_bike_admin/network/manager/manager_get_all_notification.dart';
 import 'package:your_bike_admin/network/model/model_notification.dart';
 import '../components/custom_dialogue.dart';
@@ -22,7 +24,7 @@ class _NotificationState extends State<Notifications>
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
-        _getAllNotification();
+        _getAllNotifications();
       },
     );
     super.initState();
@@ -58,7 +60,16 @@ class _NotificationState extends State<Notifications>
     return Column(
       children: [
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+            CustomDialogue.decision(
+              context: context,
+              onPressed: () {
+                _readNotification(notificationId: notification.id!);
+              },
+              icon: Icons.download_done_outlined,
+              message: AppStrings.notificationReadDone,
+            );
+          },
           child: Container(
             width: double.infinity,
             padding: const EdgeInsets.all(10),
@@ -82,7 +93,8 @@ class _NotificationState extends State<Notifications>
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     AppSize.gapW10,
-                    Text(notification.read! ? AppStrings.newNotification : "",
+                    Text(
+                      notification.read! ? AppStrings.newNotification : "",
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                   ],
@@ -103,11 +115,38 @@ class _NotificationState extends State<Notifications>
     );
   }
 
-  Future<void> _getAllNotification() async {
+  Future<void> _getAllNotifications() async {
     CustomDialogue.loading(context: context);
-    await GetAllNotificationHelper().connection(
+    await GetAllNotificationsHelper().connection(
       manager: this,
     );
+  }
+
+  Future<void> _readNotification({required int notificationId}) async {
+    Navigator.of(context).pop();
+    bool isRead = await ReadNotificationHelper()
+        .connection(notificationId: notificationId, context: context);
+    if (isRead) {
+      for (var notification in notificationList) {
+        if (notification.id == notificationId) {
+          if (mounted) {
+            CustomDialogue.simple(
+              context: context,
+              onPressed: () {
+                setState(() {
+                  notification.read = false;
+                  Navigator.of(context).pop();
+                });
+              },
+              icon: Icons.error_outline_outlined,
+              message: AppStrings.notificationRead,
+              buttonText: AppStrings.close,
+            );
+          }
+          break;
+        }
+      }
+    }
   }
 
   @override

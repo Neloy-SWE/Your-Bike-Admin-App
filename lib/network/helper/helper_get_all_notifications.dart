@@ -5,12 +5,12 @@ import 'package:your_bike_admin/network/model/model_base.dart';
 import 'package:your_bike_admin/network/model/model_notification.dart';
 import 'package:your_bike_admin/utilities/app_strings.dart';
 
-class GetAllNotificationHelper implements GetAllNotificationManager {
+class GetAllNotificationsHelper implements GetAllNotificationManager {
   Future<void> connection({
     required GetAllNotificationManager manager,
   }) async {
     try {
-      String result = await GetAllNotificationAPI().run();
+      String result = await GetAllNotificationsAPI().run();
 
       if (result != ValueConfigs.error) {
         BaseModel baseModel = BaseModel.fromJson(result);

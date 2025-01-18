@@ -84,4 +84,6 @@ class AppStrings {
   static const String pleaseSelectImage = "Please select image!";
   static const String addNewBikeRequest = "Add New Bike Request";
   static const String newNotification = "New!!";
+  static const String notificationRead = "Notification read!";
+  static const String notificationReadDone = "Notification read done?";
 }

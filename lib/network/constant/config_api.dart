@@ -11,4 +11,5 @@ class APIConfig {
   static const String updateBike = "${prefix}UpdateBike";
   static const String deleteBike = "${prefix}DeleteBike";
   static const String getAllNotifications = "${prefix}GetAllNotifications";
+  static const String readNotification = "${prefix}ReadNotification";
 }

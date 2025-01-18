@@ -2,7 +2,7 @@ import 'dart:convert';
 
 class NotificationModel {
   final int? id;
-  final bool? read;
+  bool? read;
   final String? brand;
   final String? model;
 
