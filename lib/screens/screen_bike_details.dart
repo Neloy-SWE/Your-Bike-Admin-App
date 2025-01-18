@@ -52,8 +52,8 @@ class _BikeDetailsState extends ConsumerState<BikeDetails>
   @override
   Widget build(BuildContext context) {
     bike = ref.watch(bikeDetails);
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      onPopInvoked: (isPop) async {
         return await CustomDialogue.decision(
           context: context,
           onPressed: () {

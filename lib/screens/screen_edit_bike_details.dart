@@ -112,8 +112,8 @@ class _EditBikeDetailsState extends ConsumerState<EditBikeDetails>
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      onPopInvoked: (isPop) async {
         return await CustomDialogue.decision(
           context: context,
           onPressed: () {

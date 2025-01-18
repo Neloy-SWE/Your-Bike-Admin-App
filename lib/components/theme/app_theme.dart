@@ -89,7 +89,7 @@ class AppTheme {
         ),
       ),
       menuStyle: MenuStyle(
-        side: MaterialStateProperty.all(
+        side: WidgetStateProperty.all(
           const BorderSide(width: 0.5, color: Colors.black),
         ),
       ),
