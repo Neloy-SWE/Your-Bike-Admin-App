@@ -62,6 +62,7 @@ class _HomePageState extends ConsumerState<AllBikeList>
   @override
   Widget build(BuildContext context) {
     return PopScope(
+      canPop: false,
       onPopInvoked: (isPop) async {
         return await CustomDialogue.decision(
           context: context,
@@ -169,7 +170,7 @@ class _HomePageState extends ConsumerState<AllBikeList>
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (builder) => BikeDetails(
-                  id: bike.id!,
+                  id: bike.id ?? 0,
                 ),
               ),
             );

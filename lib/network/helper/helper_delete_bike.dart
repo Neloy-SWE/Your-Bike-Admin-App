@@ -32,7 +32,7 @@ class DeleteBikeHelper implements DeleteBikeManager {
           message: AppStrings.checkYourInternet,
         );
       }
-    } on Exception catch (e) {
+    } on Exception {
       manager.fail(
         message: AppStrings.checkYourInternet,
       );

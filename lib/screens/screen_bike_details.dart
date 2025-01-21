@@ -8,7 +8,6 @@ import 'package:your_bike_admin/network/helper/helper_delete_bike.dart';
 import 'package:your_bike_admin/network/model/model_bike.dart';
 import 'package:your_bike_admin/screens/screen_all_bike_list.dart';
 import 'package:your_bike_admin/screens/screen_edit_bike_details.dart';
-import 'package:your_bike_admin/screens/screen_user_login.dart';
 import 'package:your_bike_admin/utilities/app_size.dart';
 
 import '../components/custom_dialogue.dart';
@@ -33,6 +32,7 @@ class BikeDetails extends ConsumerStatefulWidget {
 class _BikeDetailsState extends ConsumerState<BikeDetails>
     implements BikeDetailsManager, DeleteBikeManager {
   BikeModel? bike;
+  bool isBikeAvailable = false;
 
   ScrollController controller = ScrollController();
 
@@ -40,9 +40,7 @@ class _BikeDetailsState extends ConsumerState<BikeDetails>
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
-        if (ref.watch(bikeDetails).name == null) {
-          _getBikeDetails();
-        }
+        _getBikeDetails();
       },
     );
 
@@ -53,19 +51,13 @@ class _BikeDetailsState extends ConsumerState<BikeDetails>
   Widget build(BuildContext context) {
     bike = ref.watch(bikeDetails);
     return PopScope(
+      canPop: false,
       onPopInvoked: (isPop) async {
-        return await CustomDialogue.decision(
-          context: context,
-          onPressed: () {
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (builder) => const Login(),
-              ),
-              (Route<dynamic> route) => false,
-            );
-          },
-          icon: Icons.logout,
-          message: AppStrings.doYouWantToLogout,
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (builder) => const AllBikeList(),
+          ),
+          (Route<dynamic> route) => false,
         );
       },
       child: Scaffold(
@@ -79,12 +71,11 @@ class _BikeDetailsState extends ConsumerState<BikeDetails>
                 ),
                 (Route<dynamic> route) => false,
               );
-              ref.read(bikeDetails.notifier).state = BikeModel();
             },
-            icon: const Icon(Icons.chevron_left),
+            icon: const Icon(Icons.arrow_back),
           ),
         ),
-        body: ref.watch(bikeDetails).name == null
+        body: !isBikeAvailable
             ? const SizedBox()
             : ListView(
                 physics: const BouncingScrollPhysics(),
@@ -345,6 +336,7 @@ class _BikeDetailsState extends ConsumerState<BikeDetails>
   @override
   void success({required BikeModel bike, required String message}) {
     ref.read(bikeDetails.notifier).state = bike;
+    isBikeAvailable = true;
     Navigator.of(context).pop();
     Timer(
       const Duration(seconds: 1),
@@ -372,7 +364,7 @@ class _BikeDetailsState extends ConsumerState<BikeDetails>
     Navigator.of(context).pop();
     Timer(
       const Duration(seconds: 1),
-          () {
+      () {
         CustomDialogue.simple(
           context: context,
           onPressed: () {
@@ -380,7 +372,7 @@ class _BikeDetailsState extends ConsumerState<BikeDetails>
               MaterialPageRoute(
                 builder: (builder) => const AllBikeList(),
               ),
-                  (Route<dynamic> route) => false,
+              (Route<dynamic> route) => false,
             );
           },
           icon: Icons.verified_outlined,

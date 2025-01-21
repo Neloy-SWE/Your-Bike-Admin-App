@@ -77,7 +77,8 @@ class _AddBikeState extends ConsumerState<AddBike>
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
+    return /*PopScope(
+      canPop: false,
       onPopInvoked: (isPop) async {
         return await CustomDialogue.decision(
           context: context,
@@ -93,15 +94,15 @@ class _AddBikeState extends ConsumerState<AddBike>
           message: AppStrings.doYouWantToLogout,
         );
       },
-      child: Scaffold(
+      child: */Scaffold(
         appBar: AppBar(
           title: const Text(AppStrings.addNewBike),
-          leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(Icons.chevron_left),
-          ),
+          // leading: IconButton(
+          //   onPressed: () {
+          //     Navigator.of(context).pop();
+          //   },
+          //   icon: const Icon(Icons.chevron_left),
+          // ),
         ),
         body: ListView(
           physics: const BouncingScrollPhysics(),
@@ -521,7 +522,7 @@ class _AddBikeState extends ConsumerState<AddBike>
             AppSize.gapH40,
           ],
         ),
-      ),
+      // ),
     );
   }
 
@@ -602,7 +603,7 @@ class _AddBikeState extends ConsumerState<AddBike>
               MaterialPageRoute(
                 builder: (builder) => const AllBikeList(),
               ),
-                  (Route<dynamic> route) => false,
+              (Route<dynamic> route) => false,
             );
           },
           icon: Icons.verified_outlined,

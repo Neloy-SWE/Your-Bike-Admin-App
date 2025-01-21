@@ -86,4 +86,5 @@ class AppStrings {
   static const String newNotification = "New!!";
   static const String notificationRead = "Notification read!";
   static const String notificationReadDone = "Notification read done?";
+  static const String notificationBoxIsEmpty = "Notification box is empty!";
 }

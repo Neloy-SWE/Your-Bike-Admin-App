@@ -33,7 +33,7 @@ class GetAllBikesHelper implements GetAllBikesManager {
           message: AppStrings.checkYourInternet,
         );
       }
-    } on Exception catch (e) {
+    } on Exception {
       manager.fail(
         message: AppStrings.checkYourInternet,
       );

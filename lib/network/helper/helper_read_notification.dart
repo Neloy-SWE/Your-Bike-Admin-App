@@ -3,7 +3,6 @@
 * Email: taufiqneloy.swe@gmail.com
 */
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:your_bike_admin/network/constant/config_values.dart';
 import 'package:your_bike_admin/network/model/model_base.dart';
@@ -51,7 +50,7 @@ class ReadNotificationHelper {
         }
         return false;
       }
-    } on Exception catch (e) {
+    } on Exception {
       if (context.mounted) {
         CustomDialogue.simple(
           context: context,

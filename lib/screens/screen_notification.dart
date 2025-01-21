@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:your_bike_admin/network/helper/helper_get_all_notifications.dart';
 import 'package:your_bike_admin/network/helper/helper_read_notification.dart';
 import 'package:your_bike_admin/network/manager/manager_get_all_notification.dart';
 import 'package:your_bike_admin/network/model/model_notification.dart';
+import 'package:your_bike_admin/screens/screen_user_login.dart';
 import '../components/custom_dialogue.dart';
 import '../utilities/app_size.dart';
 import '../utilities/app_strings.dart';
@@ -33,26 +33,27 @@ class _NotificationState extends State<Notifications>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(AppStrings.addNewBikeRequest),
-      ),
-      body: notificationList.isEmpty
-          ? const SizedBox()
-          : ListView(
-              physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.all(25),
-              children: [
-                ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: notificationList.length,
-                    itemBuilder: (context, index) {
-                      return _elementNotification(
-                          notification: notificationList[index]);
-                    }),
-                AppSize.gapH60,
-              ],
-            ),
+        appBar: AppBar(
+          title: const Text(AppStrings.addNewBikeRequest),
+        ),
+        body: notificationList.isEmpty
+            ? const SizedBox()
+            : ListView(
+                physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.all(25),
+                children: [
+                  ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: notificationList.length,
+                      itemBuilder: (context, index) {
+                        return _elementNotification(
+                            notification: notificationList[index]);
+                      }),
+                  AppSize.gapH60,
+                ],
+              ),
+      // ),
     );
   }
 
@@ -187,7 +188,9 @@ class _NotificationState extends State<Notifications>
             Navigator.of(context).pop();
           },
           icon: Icons.verified_outlined,
-          message: message,
+          message: notifications.isEmpty
+              ? AppStrings.notificationBoxIsEmpty
+              : message,
           buttonText: AppStrings.close,
         );
       },
